@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code Extension Guide</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .container { max-width: 480px; width: 100%; padding: 40px 24px; text-align: center; }
+    h1 { font-size: 28px; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
+    p { color: #64748b; font-size: 14px; margin-bottom: 32px; }
+    .cards { display: flex; flex-direction: column; gap: 12px; }
+    a.card {
+      display: flex; align-items: center; gap: 16px;
+      background: #fff; border: 2px solid #e2e8f0; border-radius: 14px;
+      padding: 20px 24px; text-decoration: none; color: inherit;
+      transition: all 0.15s ease;
+    }
+    a.card:hover { border-color: #6366f1; box-shadow: 0 4px 20px #6366f122; }
+    .card-icon { font-size: 32px; flex-shrink: 0; }
+    .card-text { text-align: left; }
+    .card-title { font-size: 16px; font-weight: 700; color: #0f172a; }
+    .card-desc { font-size: 13px; color: #64748b; margin-top: 2px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Claude Code Extension Guide</h1>
+    <p>Interactive references for the Claude Code ecosystem</p>
+    <div class="cards">
+      <a class="card" href="ecosystem-diagram.html">
+        <div class="card-icon">&#x1f5fa;&#xfe0f;</div>
+        <div class="card-text">
+          <div class="card-title">Ecosystem Diagram</div>
+          <div class="card-desc">Interactive visual map of Commands, MCP, Skills, Hooks &amp; Plugins</div>
+        </div>
+      </a>
+      <a class="card" href="concepts.html">
+        <div class="card-icon">&#x1f4d6;</div>
+        <div class="card-text">
+          <div class="card-title">Extension Concepts</div>
+          <div class="card-desc">Detailed reference with tables, examples, and installation guides</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

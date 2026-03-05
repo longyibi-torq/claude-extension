@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code Extension Concepts</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; color: #0f172a; line-height: 1.6; }
+    .back-link {
+      position: fixed; top: 16px; left: 16px; z-index: 10;
+      font-size: 13px; font-weight: 600; color: #6366f1; text-decoration: none;
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 12px;
+    }
+    .back-link:hover { background: #f8fafc; }
+    .container { max-width: 860px; margin: 0 auto; padding: 40px 24px; }
+    h1 { font-size: 28px; font-weight: 800; margin-bottom: 24px; text-align: center; }
+    h2 { font-size: 20px; font-weight: 700; margin: 32px 0 12px; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; }
+    h3 { font-size: 16px; font-weight: 700; margin: 20px 0 8px; color: #334155; }
+    p { margin: 8px 0; color: #475569; font-size: 14px; }
+    ul, ol { margin: 8px 0 8px 24px; color: #475569; font-size: 14px; }
+    li { margin: 4px 0; }
+    strong { color: #0f172a; }
+    code { font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: 13px; background: #f1f5f9; padding: 1px 5px; border-radius: 4px; color: #6366f1; }
+    pre {
+      background: #1e293b; color: #e2e8f0; padding: 16px 20px; border-radius: 10px;
+      overflow-x: auto; font-size: 13px; margin: 12px 0; line-height: 1.5;
+    }
+    pre code { background: none; color: inherit; padding: 0; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+    th { background: #f1f5f9; font-weight: 700; text-align: left; padding: 10px 12px; border: 1px solid #e2e8f0; color: #334155; }
+    td { padding: 8px 12px; border: 1px solid #e2e8f0; color: #475569; vertical-align: top; }
+    tr:hover td { background: #f8fafc; }
+    .tree { background: #1e293b; color: #e2e8f0; padding: 16px 20px; border-radius: 10px; font-family: monospace; font-size: 13px; white-space: pre; margin: 12px 0; line-height: 1.6; }
+    hr { border: none; border-top: 1px solid #e2e8f0; margin: 28px 0; }
+    .summary-table { overflow-x: auto; }
+    .summary-table table { min-width: 700px; }
+  </style>
+</head>
+<body>
+  <a class="back-link" href="index.html">&larr; Back</a>
+  <div class="container">
+
+    <h1>Claude Code Extension Concepts</h1>
+
+    <h2>Summary Table</h2>
+    <div class="summary-table">
+      <table>
+        <tr>
+          <th></th><th>Tool / MCP</th><th>Skill</th><th>Plugin</th><th>Command</th>
+        </tr>
+        <tr>
+          <td><strong>What it is</strong></td>
+          <td>External connection protocol</td>
+          <td>Reusable workflow instructions</td>
+          <td>Bundled distribution package</td>
+          <td>Manual shortcut</td>
+        </tr>
+        <tr>
+          <td><strong>Activation</strong></td>
+          <td>On demand / always available</td>
+          <td>Auto (context-matching)</td>
+          <td>Via install</td>
+          <td>User types <code>/cmd</code></td>
+        </tr>
+        <tr>
+          <td><strong>Scope</strong></td>
+          <td>Claude-wide + multi-vendor</td>
+          <td>Claude-wide</td>
+          <td>Claude Code only</td>
+          <td>Claude Code only</td>
+        </tr>
+        <tr>
+          <td><strong>Token cost</strong></td>
+          <td>Front-loads all capabilities</td>
+          <td>~100 tokens until needed</td>
+          <td>Depends on contents</td>
+          <td>Minimal</td>
+        </tr>
+        <tr>
+          <td><strong>Best for</strong></td>
+          <td>External APIs &amp; data</td>
+          <td>Repeatable expertise</td>
+          <td>Team sharing &amp; distribution</td>
+          <td>Manual workflows</td>
+        </tr>
+        <tr>
+          <td><strong>Can contain</strong></td>
+          <td>Tool definitions</td>
+          <td>Instructions + scripts</td>
+          <td>Skills + MCP + Agents + Hooks</td>
+          <td>Prompts / bash scripts</td>
+        </tr>
+        <tr>
+          <td><strong>Installation</strong></td>
+          <td>Add to config or <code>claude mcp add</code></td>
+          <td>Place in <code>.claude/skills/</code> or via plugin</td>
+          <td><code>/plugin install</code> or <code>npm i</code></td>
+          <td>Save <code>.md</code> to <code>.claude/commands/</code></td>
+        </tr>
+        <tr>
+          <td><strong>Examples</strong></td>
+          <td>GitHub, Postgres, Slack, Filesystem, Brave Search</td>
+          <td>tdd, code-review, docx, internal-comms, deploy</td>
+          <td>supabase-pack, devops-automation-pack, skills-toolkit</td>
+          <td>/review, /deploy, /write-plan, /audit</td>
+        </tr>
+      </table>
+    </div>
+
+    <hr>
+
+    <h2>Layered Mental Model</h2>
+    <div class="tree">Claude Code Extension &amp; Customization
+&#9500;&#9472;&#9472; MCP / Tools        &rarr; external connections (GitHub, DBs, APIs)
+&#9500;&#9472;&#9472; Skills             &rarr; auto-loaded domain expertise
+&#9500;&#9472;&#9472; Plugins            &rarr; bundled distributions of the above
+&#9500;&#9472;&#9472; Commands           &rarr; user-triggered shortcuts
+&#9492;&#9472;&#9472; Hooks              &rarr; guaranteed enforcement at lifecycle events</div>
+
+    <p><strong>In a single sentence each:</strong></p>
+    <ul>
+      <li><strong>MCP</strong> is the nervous system &mdash; connecting Claude to the outside world.</li>
+      <li><strong>Skills</strong> are the internal playbook &mdash; teaching Claude how to do things, loaded on demand.</li>
+      <li><strong>Plugins</strong> are the shipping container &mdash; bundling Skills, MCP, agents, and commands for easy distribution.</li>
+      <li><strong>Commands</strong> are the manual triggers &mdash; shortcuts for workflows you initiate yourself.</li>
+      <li><strong>Hooks</strong> are the guardrails &mdash; deterministic rules that always fire, regardless of what Claude decides.</li>
+    </ul>
+
+    <hr>
+
+    <h2>Installation Methods</h2>
+
+    <h3>MCP / Tools</h3>
+    <pre><code># Via CLI
+claude mcp add &lt;server-name&gt;
+
+# Or manually in .mcp.json (project-level)
+{
+  "mcpServers": {
+    "github": { "command": "npx", "args": ["@modelcontextprotocol/server-github"] }
+  }
+}</code></pre>
+
+    <h3>Skills</h3>
+    <pre><code># Drop a folder into your project
+.claude/skills/my-skill/
+&#9500;&#9472;&#9472; SKILL.md       # instructions + YAML frontmatter
+&#9500;&#9472;&#9472; scripts/       # optional executables
+&#9492;&#9472;&#9472; resources/     # optional supporting files
+
+# Or install via plugin marketplace
+/plugin marketplace add anthropics/skills</code></pre>
+
+    <h3>Plugins</h3>
+    <pre><code># Install from marketplace inside Claude Code
+/plugin install supabase-pack
+
+# Or via npm
+npm i @intentsolutionsio/supabase-pack</code></pre>
+
+    <h3>Commands</h3>
+    <pre><code># Save a markdown file to the commands directory
+.claude/commands/review.md   # &rarr; triggers as /review
+.claude/commands/deploy.md   # &rarr; triggers as /deploy</code></pre>
+
+    <hr>
+
+    <h2>Popular Examples by Category</h2>
+
+    <h3>MCP / Tools</h3>
+    <table>
+      <tr><th>Server</th><th>What it does</th></tr>
+      <tr><td><code>github</code></td><td>Read PRs, create issues, review code diffs</td></tr>
+      <tr><td><code>postgres</code></td><td>Query your database in plain English</td></tr>
+      <tr><td><code>slack</code></td><td>Read channels, post messages, search threads</td></tr>
+      <tr><td><code>filesystem</code></td><td>Read/write local files outside the chat</td></tr>
+      <tr><td><code>brave-search</code></td><td>Live web search mid-conversation</td></tr>
+    </table>
+
+    <h3>Skills</h3>
+    <table>
+      <tr><th>Skill</th><th>Auto-activates when&hellip;</th></tr>
+      <tr><td><code>tdd</code></td><td>You ask Claude to write tests</td></tr>
+      <tr><td><code>code-review</code></td><td>You paste code and ask for a review</td></tr>
+      <tr><td><code>docx</code></td><td>You ask Claude to create/edit a Word document</td></tr>
+      <tr><td><code>internal-comms</code></td><td>You ask Claude to draft a company announcement</td></tr>
+      <tr><td><code>deploy</code></td><td>You mention deployment or release</td></tr>
+    </table>
+
+    <h3>Plugins</h3>
+    <table>
+      <tr><th>Plugin</th><th>What's inside</th></tr>
+      <tr><td><code>supabase-pack</code></td><td>Skills for auth, storage, edge functions + MCP for DB</td></tr>
+      <tr><td><code>devops-automation-pack</code></td><td>CI/CD skills + /deploy, /audit commands + lint hooks</td></tr>
+      <tr><td><code>skills-toolkit</code></td><td>Skill-creator agent + /create-skill command + templates</td></tr>
+      <tr><td><code>openrouter-pack</code></td><td>Skills + MCP for routing LLM calls across providers</td></tr>
+    </table>
+
+    <h3>Commands</h3>
+    <table>
+      <tr><th>Command</th><th>What it does</th></tr>
+      <tr><td><code>/review</code></td><td>Full code review of current file</td></tr>
+      <tr><td><code>/deploy --production</code></td><td>Runs deployment checklist and executes deploy</td></tr>
+      <tr><td><code>/write-plan</code></td><td>Brainstorms and writes an implementation plan</td></tr>
+      <tr><td><code>/audit --comprehensive</code></td><td>Full project health audit</td></tr>
+      <tr><td><code>/create-skill</code></td><td>Guided workflow to generate a new Skill file</td></tr>
+    </table>
+
+    <hr>
+
+    <h2>Hooks</h2>
+
+    <h3>Installation</h3>
+    <pre><code>// .claude/settings.json
+{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Write|Edit",
+      "hooks": [{ "type": "command", "command": "npm run lint:fix" }]
+    }],
+    "PreToolUse": [{
+      "matcher": "Bash(git commit*)",
+      "hooks": [{ "type": "command", "command": "npm test || exit 2" }]
+    }]
+  }
+}</code></pre>
+    <p>Or interactively via the <code>/hooks</code> menu inside Claude Code.</p>
+
+    <h3>Hook Lifecycle Events</h3>
+    <table>
+      <tr><th>Event</th><th>Fires when&hellip;</th><th>Can block?</th></tr>
+      <tr><td><code>PreToolUse</code></td><td>Before any tool executes</td><td>Yes</td></tr>
+      <tr><td><code>PostToolUse</code></td><td>After any tool executes</td><td>No</td></tr>
+      <tr><td><code>UserPromptSubmit</code></td><td>Before Claude sees your prompt</td><td>Yes</td></tr>
+      <tr><td><code>Notification</code></td><td>Claude needs your attention/input</td><td>No</td></tr>
+      <tr><td><code>Stop</code></td><td>Claude finishes a response</td><td>No</td></tr>
+      <tr><td><code>SessionStart</code></td><td>Session begins or resumes</td><td>No</td></tr>
+      <tr><td><code>PreCompact</code></td><td>Before conversation compaction</td><td>No</td></tr>
+    </table>
+
+    <h3>Handler Types</h3>
+    <table>
+      <tr><th>Type</th><th>How it works</th><th>Best for</th></tr>
+      <tr><td><code>command</code></td><td>Runs a shell script, pass/fail via exit code</td><td>Formatting, test gates, git guards</td></tr>
+      <tr><td><code>prompt</code></td><td>Sends a prompt to Claude for evaluation</td><td>Semantic checks, security review</td></tr>
+      <tr><td><code>agent</code></td><td>Spawns a subagent with tool access</td><td>Deep code analysis, complex validation</td></tr>
+    </table>
+
+    <h3>Popular Hook Examples</h3>
+    <table>
+      <tr><th>Hook</th><th>What it enforces</th></tr>
+      <tr><td><code>PostToolUse</code> on Write/Edit &rarr; <code>npm run lint:fix</code></td><td>Auto-format every file Claude touches</td></tr>
+      <tr><td><code>PreToolUse</code> on <code>git commit</code> &rarr; run tests</td><td>Block commits until tests pass</td></tr>
+      <tr><td><code>Notification</code> &rarr; OS/Slack alert</td><td>Ping you when Claude is waiting for input</td></tr>
+      <tr><td><code>UserPromptSubmit</code> &rarr; security scan</td><td>Block prompts that reference sensitive files</td></tr>
+      <tr><td><code>SessionStart</code> &rarr; load git status</td><td>Inject fresh context at session start</td></tr>
+    </table>
+
+    <hr>
+
+    <h2>Built-in Session Management Commands</h2>
+    <p><em>Not part of the extension stack &mdash; native Claude Code utilities</em></p>
+    <table>
+      <tr><th>Command</th><th>What it does</th></tr>
+      <tr><td><code>/context</code></td><td>Show current token usage vs. context window limit</td></tr>
+      <tr><td><code>/clear</code></td><td>Wipe conversation history; re-reads CLAUDE.md</td></tr>
+      <tr><td><code>/compact</code></td><td>Summarize conversation to save tokens</td></tr>
+      <tr><td><code>--resume</code> / <code>/resume</code></td><td>Restore a past session interactively or by ID</td></tr>
+      <tr><td><code>/cost</code></td><td>Show token usage and cost for the session</td></tr>
+    </table>
+
+  </div>
+</body>
+</html>
