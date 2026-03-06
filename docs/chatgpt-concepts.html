@@ -198,7 +198,7 @@ mcp_servers: [{
 # Install from community via skill-installer
 $skill-installer install the linear skill from the .experimental folder
 
-# Or browse skills.sh (Vercel's package manager)
+# Or install from a community registry
 npx skills add linear</code></pre>
 
     <h3>&#x1f916; Custom GPTs (ChatGPT)</h3>
@@ -321,7 +321,7 @@ npx skills add linear</code></pre>
 ## Conventions: functional components, no default exports</code></pre>
 
     <h3>GPT Store</h3>
-    <p>ChatGPT's marketplace for Custom GPTs &mdash; equivalent to a combination of Claude's Plugin Marketplace and Projects. Users can discover, install, and even monetize GPTs. As of early 2026 there are hundreds of thousands of published GPTs across categories like productivity, coding, research, and design.</p>
+    <p>ChatGPT's marketplace for Custom GPTs &mdash; roughly comparable to a mix of Claude's plugin distribution and project-specific assistants. Users can discover, install, share, and in some cases monetize GPTs.</p>
 
     <h3>Session Forking (<code>/fork</code>)</h3>
     <p>Codex CLI lets you clone a conversation into a new thread with <code>/fork</code> (or <code>codex fork</code> from the shell). Useful for branching off an existing conversation to explore a different approach without losing the original.</p>
@@ -349,15 +349,12 @@ npx skills add linear</code></pre>
 
     <h2>Cross-Platform Note: Skills are a Shared Standard</h2>
     <div class="callout-info">
-      <strong>Skills (SKILL.md format) are not OpenAI-proprietary</strong> &mdash; they are an open standard originated by Anthropic and now adopted across the ecosystem. A skill written for Claude Code will run unchanged in Codex and Google Antigravity.
+      <strong>Skills (SKILL.md format) are not OpenAI-proprietary</strong> &mdash; Anthropic introduced the format, and OpenAI Codex now supports the same folder-and-markdown skill pattern.
     </div>
     <table>
       <tr><th>Platform</th><th>Skills location</th><th>Status</th></tr>
       <tr><td>Claude Code</td><td><code>.claude/skills/</code></td><td>Originated standard (Oct 2025)</td></tr>
-      <tr><td>Codex CLI / App</td><td><code>.agents/skills/</code></td><td>Adopted (Nov 2025)</td></tr>
-      <tr><td>Google Antigravity</td><td><code>.agent/skills/</code></td><td>Adopted (Jan 2026)</td></tr>
-      <tr><td>Cursor</td><td>Via plugin layer</td><td>Supported</td></tr>
-      <tr><td>skills.sh</td><td>Package registry</td><td>Vercel-maintained directory (Jan 2026)</td></tr>
+      <tr><td>Codex CLI</td><td><code>.agents/skills/</code></td><td>Added in v0.94.0 (Feb 2026); personal skills added in v0.95.0</td></tr>
     </table>
 
     <div class="doc-footer" style="text-align:center;margin-top:32px;">
