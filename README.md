@@ -76,6 +76,42 @@ Deployment mapping:
 - `skip_app_build`: `true`
 - `output_location`: empty
 
+## Add Microsoft Entra ID Authentication
+
+Azure Static Web Apps supports built-in Microsoft Entra ID sign-in. This repo includes `docs/staticwebapp.config.json`, which protects the entire site and redirects unauthenticated users to the Azure Static Web Apps Entra login endpoint.
+
+Config behavior:
+
+- `route: "/*"` requires the built-in `authenticated` role for every page
+- `401` responses are redirected to `/.auth/login/aad`
+- No `navigationFallback` is configured because this repo is a multi-page static site, not a single-page app
+
+If you have not deployed the site yet, create the Static Web App first using the commands above. Then enable and verify Entra ID:
+
+1. In the Azure portal, open the Static Web App `swa_ai_docs`
+2. Go to **Authentication**
+3. Confirm **Microsoft Entra ID** is enabled for the app
+4. Save any changes if Azure prompts you
+5. Open the site URL and verify that anonymous users are redirected to the Microsoft sign-in flow
+
+Commit and deploy the auth config:
+
+```bash
+git checkout main
+git pull origin main
+git add docs/staticwebapp.config.json README.md
+git commit -m "Add Entra ID authentication"
+git push origin main
+```
+
+To test locally with the Static Web Apps CLI emulator:
+
+```bash
+npx swa start docs
+```
+
+The local emulator runs on `http://localhost:4280` and shows a local auth screen that simulates sign-in before you deploy to Azure.
+
 ## Project Structure
 
 ```
