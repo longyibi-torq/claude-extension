@@ -99,7 +99,7 @@ when working with code in this repository.</span>
 
 A static reference site comparing the Claude Code and ChatGPT/Codex
 extension ecosystems. The site covers Commands, MCP/Tools, Skills,
-Hooks, and Plugins for both platforms via interactive diagrams and
+Hooks, and Plugins for both platforms via interactive cheatsheets and
 concept reference pages.
 
 <span class="heading">## Architecture</span>
@@ -107,14 +107,14 @@ concept reference pages.
 <span class="bullet">-</span> <strong>Static HTML site</strong> &mdash; no build step, no framework, no bundler
 <span class="bullet">-</span> All pages are self-contained HTML files with inline CSS and JS
 <span class="bullet">-</span> Served via GitHub Pages from the <span class="code-hl">`docs/`</span> directory on <span class="code-hl">`main`</span>
-<span class="bullet">-</span> Ecosystem diagrams use React 18 (CDN/UMD) with Babel standalone
+<span class="bullet">-</span> Ecosystem cheatsheets use React 18 (CDN/UMD) with Babel standalone
 
 <span class="heading">## Key Files</span>
 
 <span class="bullet">-</span> <span class="code-hl">`docs/index.html`</span> &mdash; Landing page
-<span class="bullet">-</span> <span class="code-hl">`docs/claude-ecosystem-diagram.html`</span> &mdash; Claude ecosystem (React)
+<span class="bullet">-</span> <span class="code-hl">`docs/claude-ecosystem-cheatsheet.html`</span> &mdash; Claude ecosystem (React)
 <span class="bullet">-</span> <span class="code-hl">`docs/claude-concepts.html`</span> &mdash; Claude concepts (plain HTML)
-<span class="bullet">-</span> <span class="code-hl">`docs/chatgpt-ecosystem-diagram.html`</span> &mdash; ChatGPT ecosystem (React)
+<span class="bullet">-</span> <span class="code-hl">`docs/chatgpt-ecosystem-cheatsheet.html`</span> &mdash; ChatGPT ecosystem (React)
 <span class="bullet">-</span> <span class="code-hl">`docs/chatgpt-concepts.html`</span> &mdash; ChatGPT concepts (plain HTML)
 
 <span class="heading">## Development</span>
@@ -142,9 +142,9 @@ This repository is a static documentation site served from <span class="code-hl"
 via GitHub Pages. The main entry point is <span class="code-hl">`docs/index.html`</span>.
 Platform-specific reference pages live alongside it:
 
-<span class="bullet">-</span> <span class="code-hl">`docs/claude-ecosystem-diagram.html`</span>
+<span class="bullet">-</span> <span class="code-hl">`docs/claude-ecosystem-cheatsheet.html`</span>
 <span class="bullet">-</span> <span class="code-hl">`docs/claude-concepts.html`</span>
-<span class="bullet">-</span> <span class="code-hl">`docs/chatgpt-ecosystem-diagram.html`</span>
+<span class="bullet">-</span> <span class="code-hl">`docs/chatgpt-ecosystem-cheatsheet.html`</span>
 <span class="bullet">-</span> <span class="code-hl">`docs/chatgpt-concepts.html`</span>
 
 There is no <span class="code-hl">`src/`</span> or shared asset pipeline. Each page is
@@ -171,7 +171,7 @@ Brand colors:
 <span class="heading">## Testing Guidelines</span>
 
 No automated test suite. Validate changes manually in a browser.
-Check links, responsive layout, and interactive diagram behavior.
+Check links, responsive layout, and interactive cheatsheet behavior.
 
 <span class="heading">## Commit &amp; Pull Request Guidelines</span>
 

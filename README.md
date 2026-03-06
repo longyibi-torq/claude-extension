@@ -5,7 +5,7 @@ A static reference site comparing the **Claude Code** and **ChatGPT / Codex** ex
 ## Pages
 
 - **Landing Page** — Side-by-side Claude Code vs ChatGPT/Codex entry point
-- **Ecosystem Diagrams** — Interactive visual maps showing how each platform's extension concepts fit together, ordered by learning sequence
+- **Ecosystem Cheatsheets** — Interactive visual maps showing how each platform's extension concepts fit together, ordered by learning sequence
 - **Extension Concepts** — Detailed references with summary tables, installation methods, configuration scoping, and popular examples
 - **Config Examples** — Real CLAUDE.md and AGENTS.md from this repo shown side by side
 
@@ -22,9 +22,9 @@ A static reference site comparing the **Claude Code** and **ChatGPT / Codex** ex
 ```
 docs/
 ├── index.html                      # Landing page
-├── claude-ecosystem-diagram.html   # Claude Code ecosystem (React)
+├── claude-ecosystem-cheatsheet.html   # Claude Code ecosystem (React)
 ├── claude-concepts.html            # Claude Code concepts reference
-├── chatgpt-ecosystem-diagram.html  # ChatGPT/Codex ecosystem (React)
+├── chatgpt-ecosystem-cheatsheet.html  # ChatGPT/Codex ecosystem (React)
 ├── chatgpt-concepts.html           # ChatGPT/Codex concepts reference
 └── config-examples.html            # CLAUDE.md vs AGENTS.md examples
 ```
