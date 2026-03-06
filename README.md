@@ -17,6 +17,26 @@ A static reference site comparing the **Claude Code** and **ChatGPT / Codex** ex
 4. Set Branch to **main** and folder to **/docs**
 5. Save — your site will be live in a few minutes
 
+## Setup for Azure Static Web Apps
+
+This repo is configured for Azure Static Web Apps with GitHub Actions. The deployment workflow is in `.github/workflows/azure-static-web-apps-brave-bay-06ce9bf10.yml` and publishes the existing static site directly from `docs/` with no build step.
+
+1. In your Azure Static Web App, copy the deployment token if you do not already have it
+2. In GitHub, open **Settings > Secrets and variables > Actions**
+3. Add or verify the repository secret named `AZURE_STATIC_WEB_APPS_API_TOKEN_BRAVE_BAY_06CE9BF10`
+4. Push to `az-swa` or rerun the workflow on that branch
+
+Branch mapping:
+
+- GitHub Pages: `main`
+- Azure Static Web Apps: `az-swa`
+
+Deployment mapping:
+
+- `app_location`: `docs`
+- `skip_app_build`: `true`
+- `output_location`: empty
+
 ## Project Structure
 
 ```
