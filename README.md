@@ -19,20 +19,59 @@ A static reference site comparing the **Claude Code** and **ChatGPT / Codex** ex
 
 ## Setup for Azure Static Web Apps
 
-This repo is configured for Azure Static Web Apps with GitHub Actions. The deployment workflow is in `.github/workflows/azure-static-web-apps-brave-bay-06ce9bf10.yml` and publishes the existing static site directly from `docs/` with no build step.
+Use these commands in Git Bash to create an Azure Static Web App for this repo and publish the static files from `docs/`.
 
-1. In your Azure Static Web App, copy the deployment token if you do not already have it
-2. In GitHub, open **Settings > Secrets and variables > Actions**
-3. Add or verify the repository secret named `AZURE_STATIC_WEB_APPS_API_TOKEN_BRAVE_BAY_06CE9BF10`
-4. Push to `az-swa` or rerun the workflow on that branch
+```bash
+az login
+az account show
+az extension add --name staticwebapp --upgrade
 
-Branch mapping:
+export RG="rg_app_hosting"
+export APP_NAME="swa_ai_docs"
+export LOCATION="eastus2"
+export REPO_URL="https://github.com/longyibi-torq/claude-extension.git"
+export BRANCH="main"
 
-- GitHub Pages: `main`
-- Azure Static Web Apps: `az-swa`
+az staticwebapp create \
+  --name "$APP_NAME" \
+  --resource-group "$RG" \
+  --location "$LOCATION" \
+  --source "$REPO_URL" \
+  --branch "$BRANCH" \
+  --app-location "docs" \
+  --login-with-github
+```
+
+After Azure creates the resource and GitHub connection:
+
+1. Open the generated workflow in `.github/workflows/`
+2. Confirm it deploys the existing static site with:
+   - `app_location: "docs"`
+   - `output_location: ""`
+   - `skip_app_build: true`
+3. Commit and push the workflow to `main`
+
+```bash
+git checkout main
+git pull origin main
+git add .github/workflows
+git commit -m "Add Azure Static Web Apps deployment"
+git push origin main
+```
+
+To get the deployed hostname:
+
+```bash
+az staticwebapp show \
+  --name "$APP_NAME" \
+  --resource-group "$RG" \
+  --query "defaultHostname" \
+  -o tsv
+```
 
 Deployment mapping:
 
+- Branch: `main`
 - `app_location`: `docs`
 - `skip_app_build`: `true`
 - `output_location`: empty
