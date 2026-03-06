@@ -49,13 +49,14 @@
     <div class="summary-table">
       <table>
         <tr>
-          <th></th><th>Command</th><th>Tool / MCP</th><th>Skill</th><th>Plugin</th>
+          <th></th><th>&#x26A1; Command</th><th>&#x1f527; Tool / MCP</th><th>&#x1f9e0; Skill</th><th>&#x1f6e1;&#xfe0f; Hook</th><th>&#x1f4e6; Plugin</th>
         </tr>
         <tr>
           <td><strong>What it is</strong></td>
           <td>Manual shortcut</td>
           <td>External connection protocol</td>
           <td>Reusable workflow instructions</td>
+          <td>Deterministic lifecycle rule</td>
           <td>Bundled distribution package</td>
         </tr>
         <tr>
@@ -63,6 +64,7 @@
           <td>User types <code>/cmd</code></td>
           <td>On demand / always available</td>
           <td>Auto (context-matching)</td>
+          <td>Always &mdash; guaranteed</td>
           <td>Via install</td>
         </tr>
         <tr>
@@ -71,12 +73,14 @@
           <td>Claude-wide + multi-vendor</td>
           <td>Claude-wide</td>
           <td>Claude Code only</td>
+          <td>Claude Code only</td>
         </tr>
         <tr>
           <td><strong>Token cost</strong></td>
           <td>Minimal</td>
           <td>Front-loads all capabilities</td>
           <td>~100 tokens until needed</td>
+          <td>Zero (runs outside Claude)</td>
           <td>Depends on contents</td>
         </tr>
         <tr>
@@ -84,6 +88,7 @@
           <td>Manual workflows</td>
           <td>External APIs &amp; data</td>
           <td>Repeatable expertise</td>
+          <td>Enforcing quality gates</td>
           <td>Team sharing &amp; distribution</td>
         </tr>
         <tr>
@@ -91,6 +96,7 @@
           <td>Prompts / bash scripts</td>
           <td>Tool definitions</td>
           <td>Instructions + scripts</td>
+          <td>Shell commands / prompts / agents</td>
           <td>Skills + MCP + Agents + Hooks</td>
         </tr>
         <tr>
@@ -98,6 +104,7 @@
           <td>Save <code>.md</code> to <code>.claude/commands/</code></td>
           <td>Add to config or <code>claude mcp add</code></td>
           <td>Place in <code>.claude/skills/</code> or via plugin</td>
+          <td><code>.claude/settings.json</code> or <code>/hooks</code></td>
           <td><code>/plugin install</code> or <code>npm i</code></td>
         </tr>
         <tr>
@@ -105,6 +112,7 @@
           <td>/review, /deploy, /write-plan, /audit</td>
           <td>GitHub, Postgres, Slack, Filesystem, Brave Search</td>
           <td>tdd, code-review, docx, internal-comms, deploy</td>
+          <td>Auto-lint, test gate, notification, security scan</td>
           <td>supabase-pack, devops-automation-pack, skills-toolkit</td>
         </tr>
       </table>
@@ -113,27 +121,33 @@
     <hr>
 
     <h2>Layered Mental Model</h2>
+    <p style="font-size:12px;color:#64748b;margin-bottom:8px"><em>Ordered by learning sequence</em></p>
     <div class="tree">Claude Code Extension &amp; Customization
-&#9500;&#9472;&#9472; MCP / Tools        &rarr; external connections (GitHub, DBs, APIs)
-&#9500;&#9472;&#9472; Skills             &rarr; auto-loaded domain expertise
-&#9500;&#9472;&#9472; Plugins            &rarr; bundled distributions of the above
-&#9500;&#9472;&#9472; Commands           &rarr; user-triggered shortcuts
-&#9492;&#9472;&#9472; Hooks              &rarr; guaranteed enforcement at lifecycle events</div>
+&#9500;&#9472;&#9472; 1. Commands        &rarr; user-triggered shortcuts
+&#9500;&#9472;&#9472; 2. MCP / Tools     &rarr; external connections (GitHub, DBs, APIs)
+&#9500;&#9472;&#9472; 3. Skills          &rarr; auto-loaded domain expertise
+&#9500;&#9472;&#9472; 4. Hooks           &rarr; guaranteed enforcement at lifecycle events
+&#9492;&#9472;&#9472; 5. Plugins         &rarr; bundled distributions of the above</div>
 
     <p><strong>In a single sentence each:</strong></p>
     <ul>
+      <li><strong>Commands</strong> are the manual triggers &mdash; shortcuts for workflows you initiate yourself.</li>
       <li><strong>MCP</strong> is the nervous system &mdash; connecting Claude to the outside world.</li>
       <li><strong>Skills</strong> are the internal playbook &mdash; teaching Claude how to do things, loaded on demand.</li>
-      <li><strong>Plugins</strong> are the shipping container &mdash; bundling Skills, MCP, agents, and commands for easy distribution.</li>
-      <li><strong>Commands</strong> are the manual triggers &mdash; shortcuts for workflows you initiate yourself.</li>
       <li><strong>Hooks</strong> are the guardrails &mdash; deterministic rules that always fire, regardless of what Claude decides.</li>
+      <li><strong>Plugins</strong> are the shipping container &mdash; bundling Skills, MCP, agents, and commands for easy distribution.</li>
     </ul>
 
     <hr>
 
     <h2>Installation Methods</h2>
 
-    <h3>MCP / Tools</h3>
+    <h3>&#x26A1; Commands</h3>
+    <pre><code># Save a markdown file to the commands directory
+.claude/commands/review.md   # &rarr; triggers as /review
+.claude/commands/deploy.md   # &rarr; triggers as /deploy</code></pre>
+
+    <h3>&#x1f527; MCP / Tools</h3>
     <pre><code># Via CLI
 claude mcp add &lt;server-name&gt;
 
@@ -144,7 +158,7 @@ claude mcp add &lt;server-name&gt;
   }
 }</code></pre>
 
-    <h3>Skills</h3>
+    <h3>&#x1f9e0; Skills</h3>
     <pre><code># Drop a folder into your project
 .claude/skills/my-skill/
 &#9500;&#9472;&#9472; SKILL.md       # instructions + YAML frontmatter
@@ -154,52 +168,71 @@ claude mcp add &lt;server-name&gt;
 # Or install via plugin marketplace
 /plugin marketplace add anthropics/skills</code></pre>
 
-    <h3>Plugins</h3>
+    <h3>&#x1f6e1;&#xfe0f; Hooks</h3>
+    <pre><code># In .claude/settings.json
+{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Write|Edit",
+      "hooks": [{ "type": "command", "command": "npm run lint:fix" }]
+    }]
+  }
+}
+
+# Or interactively via /hooks menu</code></pre>
+
+    <h3>&#x1f4e6; Plugins</h3>
     <pre><code># Install from marketplace inside Claude Code
 /plugin install supabase-pack
 
 # Or via npm
 npm i @intentsolutionsio/supabase-pack</code></pre>
 
-    <h3>Commands</h3>
-    <pre><code># Save a markdown file to the commands directory
-.claude/commands/review.md   # &rarr; triggers as /review
-.claude/commands/deploy.md   # &rarr; triggers as /deploy</code></pre>
+    <div style="background:#fef5f0;border:1px solid #fed7aa;border-radius:10px;padding:12px 16px;margin:16px 0;font-size:13px;color:#475569;">
+      <strong style="color:#d97757;">See real examples:</strong> View the <a href="config-examples.html" style="color:#d97757;font-weight:600">CLAUDE.md &amp; AGENTS.md</a> from this repository side by side &mdash; the project-level config files that Claude Code and Codex read at session start.
+    </div>
+
+    <hr>
+
+    <h2>Configuration Scoping &mdash; Where You Put Things Matters</h2>
+    <p>Every piece of Claude Code configuration &mdash; hooks, skills, commands, MCP servers, and <code>CLAUDE.md</code> &mdash; is <strong>directory-scoped</strong>. The directory you launch Claude from determines which configuration is active. This has real practical consequences:</p>
+
+    <div style="background:#fef9f0;border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin:16px 0;font-size:13px;color:#475569;">
+      <strong style="color:#b45309;">Example:</strong> If you add a <code>PostToolUse</code> lint hook to <code>~/.claude/settings.json</code> (user level), it fires on <em>every project you open</em> &mdash; even repos where that linter isn&rsquo;t installed or applicable. Put the same hook in the project&rsquo;s <code>.claude/settings.json</code> instead, and it only runs when you launch Claude from that project.
+    </div>
+
+    <h3>Scope Hierarchy (highest precedence first)</h3>
+    <table>
+      <tr><th>Scope</th><th>Location</th><th>Applies to</th><th>Shared?</th></tr>
+      <tr><td><strong>Managed</strong></td><td>System directories (IT/enterprise)</td><td>All users on machine</td><td>Yes (admin-deployed)</td></tr>
+      <tr><td><strong>Local</strong></td><td><code>.claude/settings.local.json</code></td><td>You, current project only</td><td>No (gitignored)</td></tr>
+      <tr><td><strong>Project</strong></td><td><code>.claude/settings.json</code></td><td>All project collaborators</td><td>Yes (committed to git)</td></tr>
+      <tr><td><strong>User</strong></td><td><code>~/.claude/settings.json</code></td><td>You, all your projects</td><td>No</td></tr>
+    </table>
+
+    <h3>How Each Config Type Resolves</h3>
+    <table>
+      <tr><th>Config</th><th>Resolution rule</th></tr>
+      <tr><td><strong>Settings &amp; Hooks</strong></td><td>Merged across scopes. Arrays concatenate; objects use highest-precedence scope. A hook defined at user level runs everywhere unless overridden.</td></tr>
+      <tr><td><strong>CLAUDE.md</strong></td><td>Walks <em>up</em> the directory tree from your working directory, loading every <code>CLAUDE.md</code> it finds. Subdirectory files lazy-load when Claude reads files there. User-level <code>~/.claude/CLAUDE.md</code> applies to all projects.</td></tr>
+      <tr><td><strong>Skills</strong></td><td>Discovered from the project&rsquo;s <code>.claude/skills/</code>. Not inherited from parent directories or user home.</td></tr>
+      <tr><td><strong>Commands</strong></td><td>Discovered from the project&rsquo;s <code>.claude/commands/</code>. User-level commands in <code>~/.claude/commands/</code> are available everywhere.</td></tr>
+      <tr><td><strong>MCP Servers</strong></td><td>Three scopes: <em>local</em> (you + this project), <em>project</em> (<code>.mcp.json</code>, shared), <em>user</em> (<code>~/.claude.json</code>, all projects). Local &gt; Project &gt; User.</td></tr>
+    </table>
+
+    <h3>Practical Rule of Thumb</h3>
+    <ul>
+      <li><strong>Project-specific tools</strong> (linters, test runners, deploy scripts) &rarr; put in <code>.claude/settings.json</code> so they only fire for that repo.</li>
+      <li><strong>Personal preferences</strong> (notification hooks, editor style) &rarr; put in <code>~/.claude/settings.json</code> so they follow you everywhere.</li>
+      <li><strong>Team conventions</strong> (code style hooks, required test gates) &rarr; commit to <code>.claude/settings.json</code> so everyone on the team gets them.</li>
+      <li><strong>Private overrides</strong> (disable a noisy team hook locally) &rarr; use <code>.claude/settings.local.json</code> (gitignored).</li>
+    </ul>
 
     <hr>
 
     <h2>Popular Examples by Category</h2>
 
-    <h3>MCP / Tools</h3>
-    <table>
-      <tr><th>Server</th><th>What it does</th></tr>
-      <tr><td><code>github</code></td><td>Read PRs, create issues, review code diffs</td></tr>
-      <tr><td><code>postgres</code></td><td>Query your database in plain English</td></tr>
-      <tr><td><code>slack</code></td><td>Read channels, post messages, search threads</td></tr>
-      <tr><td><code>filesystem</code></td><td>Read/write local files outside the chat</td></tr>
-      <tr><td><code>brave-search</code></td><td>Live web search mid-conversation</td></tr>
-    </table>
-
-    <h3>Skills</h3>
-    <table>
-      <tr><th>Skill</th><th>Auto-activates when&hellip;</th></tr>
-      <tr><td><code>tdd</code></td><td>You ask Claude to write tests</td></tr>
-      <tr><td><code>code-review</code></td><td>You paste code and ask for a review</td></tr>
-      <tr><td><code>docx</code></td><td>You ask Claude to create/edit a Word document</td></tr>
-      <tr><td><code>internal-comms</code></td><td>You ask Claude to draft a company announcement</td></tr>
-      <tr><td><code>deploy</code></td><td>You mention deployment or release</td></tr>
-    </table>
-
-    <h3>Plugins</h3>
-    <table>
-      <tr><th>Plugin</th><th>What's inside</th></tr>
-      <tr><td><code>supabase-pack</code></td><td>Skills for auth, storage, edge functions + MCP for DB</td></tr>
-      <tr><td><code>devops-automation-pack</code></td><td>CI/CD skills + /deploy, /audit commands + lint hooks</td></tr>
-      <tr><td><code>skills-toolkit</code></td><td>Skill-creator agent + /create-skill command + templates</td></tr>
-      <tr><td><code>openrouter-pack</code></td><td>Skills + MCP for routing LLM calls across providers</td></tr>
-    </table>
-
-    <h3>Commands</h3>
+    <h3>&#x26A1; Commands</h3>
     <table>
       <tr><th>Command</th><th>What it does</th></tr>
       <tr><td><code>/review</code></td><td>Full code review of current file</td></tr>
@@ -209,25 +242,29 @@ npm i @intentsolutionsio/supabase-pack</code></pre>
       <tr><td><code>/create-skill</code></td><td>Guided workflow to generate a new Skill file</td></tr>
     </table>
 
+    <h3>&#x1f527; MCP / Tools</h3>
+    <table>
+      <tr><th>Server</th><th>What it does</th></tr>
+      <tr><td><code>github</code></td><td>Read PRs, create issues, review code diffs</td></tr>
+      <tr><td><code>postgres</code></td><td>Query your database in plain English</td></tr>
+      <tr><td><code>slack</code></td><td>Read channels, post messages, search threads</td></tr>
+      <tr><td><code>filesystem</code></td><td>Read/write local files outside the chat</td></tr>
+      <tr><td><code>brave-search</code></td><td>Live web search mid-conversation</td></tr>
+    </table>
+
+    <h3>&#x1f9e0; Skills</h3>
+    <table>
+      <tr><th>Skill</th><th>Auto-activates when&hellip;</th></tr>
+      <tr><td><code>tdd</code></td><td>You ask Claude to write tests</td></tr>
+      <tr><td><code>code-review</code></td><td>You paste code and ask for a review</td></tr>
+      <tr><td><code>docx</code></td><td>You ask Claude to create/edit a Word document</td></tr>
+      <tr><td><code>internal-comms</code></td><td>You ask Claude to draft a company announcement</td></tr>
+      <tr><td><code>deploy</code></td><td>You mention deployment or release</td></tr>
+    </table>
+
     <hr>
 
-    <h2>Hooks</h2>
-
-    <h3>Installation</h3>
-    <pre><code>// .claude/settings.json
-{
-  "hooks": {
-    "PostToolUse": [{
-      "matcher": "Write|Edit",
-      "hooks": [{ "type": "command", "command": "npm run lint:fix" }]
-    }],
-    "PreToolUse": [{
-      "matcher": "Bash(git commit*)",
-      "hooks": [{ "type": "command", "command": "npm test || exit 2" }]
-    }]
-  }
-}</code></pre>
-    <p>Or interactively via the <code>/hooks</code> menu inside Claude Code.</p>
+    <h2>&#x1f6e1;&#xfe0f; Hooks</h2>
 
     <h3>Hook Lifecycle Events</h3>
     <table>
@@ -261,17 +298,30 @@ npm i @intentsolutionsio/supabase-pack</code></pre>
 
     <hr>
 
+    <h2>&#x1f4e6; Plugins</h2>
+
+    <h3>Popular Plugins</h3>
+    <table>
+      <tr><th>Plugin</th><th>What's inside</th></tr>
+      <tr><td><code>supabase-pack</code></td><td>Skills for auth, storage, edge functions + MCP for DB</td></tr>
+      <tr><td><code>devops-automation-pack</code></td><td>CI/CD skills + /deploy, /audit commands + lint hooks</td></tr>
+      <tr><td><code>skills-toolkit</code></td><td>Skill-creator agent + /create-skill command + templates</td></tr>
+      <tr><td><code>openrouter-pack</code></td><td>Skills + MCP for routing LLM calls across providers</td></tr>
+    </table>
+
+    <hr>
+
     <h2>Built-in Session Management Commands</h2>
     <p><em>Not part of the extension stack &mdash; native Claude Code utilities</em></p>
     <table>
       <tr><th>Command</th><th>What it does</th></tr>
+      <tr><td><code>/init</code></td><td>Generate a CLAUDE.md scaffold for the current project</td></tr>
       <tr><td><code>/context</code></td><td>Show current token usage vs. context window limit</td></tr>
       <tr><td><code>/clear</code></td><td>Wipe conversation history; re-reads CLAUDE.md</td></tr>
       <tr><td><code>/compact</code></td><td>Summarize conversation to save tokens</td></tr>
       <tr><td><code>--continue</code> / <code>-c</code></td><td>Load the most recent conversation in the current directory</td></tr>
       <tr><td><code>--resume</code> / <code>-r</code></td><td>Resume a specific session by ID or name (CLI flag)</td></tr>
       <tr><td><code>/resume</code></td><td>Reopen a saved conversation (interactive slash command)</td></tr>
-      <tr><td><code>/cost</code></td><td>Show token usage and cost for the session</td></tr>
     </table>
 
     <div class="doc-footer" style="text-align:center;margin-top:32px;">

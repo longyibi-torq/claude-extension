@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code Extension Cheatsheet (PDF)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    @page { size: A4; margin: 16mm 14mm; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; color: #0f172a; line-height: 1.45; font-size: 11px; }
+    .header { text-align: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 3px solid #d97757; }
+    .header h1 { font-size: 20px; font-weight: 800; color: #d97757; margin-bottom: 2px; }
+    .header .meta { font-size: 10px; color: #94a3b8; }
+    .sequence { display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 14px; font-size: 10px; font-weight: 700; }
+    .sequence .step { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px; padding: 3px 8px; }
+    .sequence .arrow { color: #94a3b8; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .card { border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; break-inside: avoid; }
+    .card-header { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+    .card-num { width: 18px; height: 18px; border-radius: 50%; color: #fff; font-size: 10px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .card-title { font-size: 13px; font-weight: 800; }
+    .card-tagline { font-size: 9.5px; color: #64748b; font-style: italic; margin-bottom: 6px; }
+    .card table { width: 100%; font-size: 10px; border-collapse: collapse; }
+    .card td { padding: 2px 0; vertical-align: top; }
+    .card td:first-child { font-weight: 700; color: #64748b; width: 72px; white-space: nowrap; }
+    .card td:last-child { color: #0f172a; }
+    code { font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: 9.5px; background: #f1f5f9; padding: 0 3px; border-radius: 2px; }
+    .examples { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
+    .examples span { font-size: 9px; font-weight: 600; padding: 1px 6px; border-radius: 4px; font-family: monospace; }
+    .card-commands .full { grid-column: 1 / -1; }
+    .builtins { margin-top: 6px; padding-top: 6px; border-top: 1px solid #f1f5f9; }
+    .builtins-title { font-size: 9px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+    .builtins table td { padding: 1px 0; font-size: 9.5px; }
+    .flow { text-align: center; padding: 10px; border: 1.5px solid #e2e8f0; border-radius: 8px; margin-bottom: 10px; break-inside: avoid; }
+    .flow-title { font-size: 9px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .flow-row { display: flex; align-items: center; justify-content: center; gap: 4px; flex-wrap: wrap; margin-bottom: 6px; }
+    .flow-row .pill { font-size: 9.5px; font-weight: 600; padding: 3px 8px; border-radius: 12px; border: 1px solid; }
+    .flow-row .arrow { color: #94a3b8; font-size: 12px; }
+    .flow-sub { display: flex; justify-content: center; gap: 12px; font-size: 9.5px; color: #64748b; }
+    .footer { text-align: center; font-size: 9px; color: #94a3b8; margin-top: 8px; padding-top: 8px; border-top: 1px solid #e2e8f0; }
+    .footer a { color: #6366f1; text-decoration: none; font-weight: 600; }
+    .no-print { position: fixed; top: 12px; right: 12px; z-index: 10; }
+    .no-print button { font-family: 'Segoe UI', sans-serif; font-size: 13px; font-weight: 700; color: #fff; background: #d97757; border: none; border-radius: 8px; padding: 8px 18px; cursor: pointer; }
+    .no-print button:hover { background: #c2623f; }
+    @media print { .no-print { display: none; } }
+    /* colors */
+    .c-cmd { border-color: #fde68a; } .c-cmd .card-num { background: #d97706; }
+    .c-mcp { border-color: #c7d2fe; } .c-mcp .card-num { background: #6366f1; }
+    .c-skill { border-color: #a5f3fc; } .c-skill .card-num { background: #0891b2; }
+    .c-hook { border-color: #fecaca; } .c-hook .card-num { background: #dc2626; }
+    .c-plug { border-color: #ddd6fe; } .c-plug .card-num { background: #7c3aed; }
+    .ex-cmd { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+    .ex-mcp { background: #eef2ff; color: #6366f1; border: 1px solid #c7d2fe; }
+    .ex-skill { background: #ecfeff; color: #0891b2; border: 1px solid #a5f3fc; }
+    .ex-hook { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+    .ex-plug { background: #f5f3ff; color: #7c3aed; border: 1px solid #ddd6fe; }
+  </style>
+</head>
+<body>
+  <div class="no-print"><button onclick="window.print()">Save as PDF</button></div>
+
+  <div class="header">
+    <h1>Claude Code Extension Cheatsheet</h1>
+    <div class="meta">Updated 6 March 2026 &middot; Claude Code v2.1.70 &middot; <a href="https://docs.anthropic.com/en/docs/claude-code" style="color:#d97757;text-decoration:none">docs.anthropic.com</a></div>
+  </div>
+
+  <div class="sequence">
+    <span class="step">1. Commands</span><span class="arrow">&rarr;</span>
+    <span class="step">2. MCP / Tools</span><span class="arrow">&rarr;</span>
+    <span class="step">3. Skills</span><span class="arrow">&rarr;</span>
+    <span class="step">4. Hooks</span><span class="arrow">&rarr;</span>
+    <span class="step">5. Plugins</span>
+  </div>
+
+  <div class="grid">
+    <!-- Commands -->
+    <div class="card c-cmd">
+      <div class="card-header"><div class="card-num">1</div><div class="card-title">&#x26A1; Commands</div></div>
+      <div class="card-tagline">The shortcuts &mdash; workflows you trigger on demand</div>
+      <table>
+        <tr><td>Scope</td><td>Claude Code only</td></tr>
+        <tr><td>Activation</td><td>User types <code>/cmd</code></td></tr>
+        <tr><td>Token cost</td><td>Minimal</td></tr>
+        <tr><td>Best for</td><td>Manual workflows</td></tr>
+        <tr><td>Install</td><td><code>.claude/commands/&lt;name&gt;.md</code></td></tr>
+      </table>
+      <div class="examples"><span class="ex-cmd">/review</span><span class="ex-cmd">/deploy</span><span class="ex-cmd">/write-plan</span><span class="ex-cmd">/audit</span></div>
+      <div class="builtins">
+        <div class="builtins-title">Built-in</div>
+        <table>
+          <tr><td><code>/init</code></td><td>Generate CLAUDE.md scaffold</td></tr>
+          <tr><td><code>/clear</code></td><td>Wipe conversation</td></tr>
+          <tr><td><code>/context</code></td><td>Check token usage</td></tr>
+          <tr><td><code>/compact</code></td><td>Summarize to save tokens</td></tr>
+          <tr><td><code>/resume</code></td><td>Restore a conversation</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- MCP / Tools -->
+    <div class="card c-mcp">
+      <div class="card-header"><div class="card-num">2</div><div class="card-title">&#x1f527; MCP / Tools</div></div>
+      <div class="card-tagline">The nervous system &mdash; connects Claude to the outside world</div>
+      <table>
+        <tr><td>Scope</td><td>Claude-wide + Multi-vendor</td></tr>
+        <tr><td>Activation</td><td>On demand</td></tr>
+        <tr><td>Token cost</td><td>High (front-loaded)</td></tr>
+        <tr><td>Best for</td><td>External APIs &amp; data</td></tr>
+        <tr><td>Install</td><td><code>claude mcp add &lt;server&gt;</code></td></tr>
+      </table>
+      <div class="examples"><span class="ex-mcp">GitHub</span><span class="ex-mcp">Postgres</span><span class="ex-mcp">Slack</span><span class="ex-mcp">Filesystem</span><span class="ex-mcp">Brave Search</span></div>
+    </div>
+
+    <!-- Skills -->
+    <div class="card c-skill">
+      <div class="card-header"><div class="card-num">3</div><div class="card-title">&#x1f9e0; Skills</div></div>
+      <div class="card-tagline">The playbook &mdash; teaches Claude how to do things, loaded on demand</div>
+      <table>
+        <tr><td>Scope</td><td>Claude-wide</td></tr>
+        <tr><td>Activation</td><td>Auto (context-matching)</td></tr>
+        <tr><td>Token cost</td><td>~100 tokens until needed</td></tr>
+        <tr><td>Best for</td><td>Repeatable expertise</td></tr>
+        <tr><td>Install</td><td><code>.claude/skills/&lt;name&gt;/SKILL.md</code></td></tr>
+      </table>
+      <div class="examples"><span class="ex-skill">tdd</span><span class="ex-skill">code-review</span><span class="ex-skill">docx</span><span class="ex-skill">internal-comms</span><span class="ex-skill">deploy</span></div>
+    </div>
+
+    <!-- Hooks -->
+    <div class="card c-hook">
+      <div class="card-header"><div class="card-num">4</div><div class="card-title">&#x1f6e1;&#xfe0f; Hooks</div></div>
+      <div class="card-tagline">The guardrails &mdash; deterministic rules that always fire</div>
+      <table>
+        <tr><td>Scope</td><td>Claude Code only</td></tr>
+        <tr><td>Activation</td><td>Always &mdash; guaranteed</td></tr>
+        <tr><td>Token cost</td><td>Zero (runs outside Claude)</td></tr>
+        <tr><td>Best for</td><td>Enforcing quality gates</td></tr>
+        <tr><td>Install</td><td><code>.claude/settings.json</code> or <code>/hooks</code></td></tr>
+      </table>
+      <div class="examples"><span class="ex-hook">Auto-lint on save</span><span class="ex-hook">Block commit if tests fail</span><span class="ex-hook">Notification on idle</span></div>
+    </div>
+
+    <!-- Plugins -->
+    <div class="card c-plug" style="grid-column: 1 / -1;">
+      <div class="card-header"><div class="card-num">5</div><div class="card-title">&#x1f4e6; Plugins</div></div>
+      <div class="card-tagline">The container &mdash; bundles Commands, MCP, Skills &amp; Hooks to share</div>
+      <table>
+        <tr><td>Scope</td><td>Claude Code only</td></tr>
+        <tr><td>Activation</td><td>Via install</td></tr>
+        <tr><td>Token cost</td><td>Depends on contents</td></tr>
+        <tr><td>Best for</td><td>Team sharing &amp; distribution</td></tr>
+        <tr><td>Install</td><td><code>/plugin install &lt;name&gt;</code></td></tr>
+      </table>
+      <div class="examples"><span class="ex-plug">supabase-pack</span><span class="ex-plug">devops-automation-pack</span><span class="ex-plug">skills-toolkit</span><span class="ex-plug">openrouter-pack</span></div>
+    </div>
+  </div>
+
+  <!-- Flow -->
+  <div class="flow">
+    <div class="flow-title">How they fit together</div>
+    <div class="flow-row">
+      <span class="pill" style="background:#f1f5f9;color:#475569;border-color:#e2e8f0">User Input</span>
+      <span class="arrow">&rarr;</span>
+      <span class="pill" style="background:#fffbeb;color:#d97706;border-color:#fde68a">&#x26A1; Commands</span>
+      <span class="arrow">&rarr;</span>
+      <span class="pill" style="background:#ecfeff;color:#0891b2;border-color:#a5f3fc">&#x1f9e0; Skills</span>
+      <span class="arrow">&rarr;</span>
+      <span class="pill" style="background:#eef2ff;color:#6366f1;border-color:#c7d2fe">&#x1f527; MCP Tools</span>
+    </div>
+    <div class="flow-sub">
+      <span>&#x1f6e1;&#xfe0f; <strong>Hooks</strong> enforce rules at every step</span>
+      <span>&middot;</span>
+      <span>&#x1f4e6; <strong>Plugins</strong> bundle &amp; distribute everything above</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="https://docs.anthropic.com/en/docs/claude-code">Official Docs</a> &middot;
+    <a href="https://github.com/anthropics/claude-code">GitHub</a> &middot;
+    <a href="https://modelcontextprotocol.io">MCP Spec</a>
+  </div>
+</body>
+</html>

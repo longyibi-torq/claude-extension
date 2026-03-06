@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT / Codex Extension Cheatsheet (PDF)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    @page { size: A4; margin: 16mm 14mm; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; color: #0f172a; line-height: 1.45; font-size: 11px; }
+    .header { text-align: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 3px solid #10a37f; }
+    .header h1 { font-size: 20px; font-weight: 800; color: #000; margin-bottom: 2px; }
+    .header .meta { font-size: 10px; color: #94a3b8; }
+    .sequence { display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 14px; font-size: 10px; font-weight: 700; }
+    .sequence .step { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px; padding: 3px 8px; }
+    .sequence .arrow { color: #94a3b8; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .card { border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; break-inside: avoid; }
+    .card-header { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+    .card-num { width: 18px; height: 18px; border-radius: 50%; color: #fff; font-size: 10px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .card-title { font-size: 13px; font-weight: 800; }
+    .card-tagline { font-size: 9.5px; color: #64748b; font-style: italic; margin-bottom: 6px; }
+    .card table { width: 100%; font-size: 10px; border-collapse: collapse; }
+    .card td { padding: 2px 0; vertical-align: top; }
+    .card td:first-child { font-weight: 700; color: #64748b; width: 72px; white-space: nowrap; }
+    .card td:last-child { color: #0f172a; }
+    code { font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: 9.5px; background: #f1f5f9; padding: 0 3px; border-radius: 2px; }
+    .examples { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
+    .examples span { font-size: 9px; font-weight: 600; padding: 1px 6px; border-radius: 4px; font-family: monospace; }
+    .builtins { margin-top: 6px; padding-top: 6px; border-top: 1px solid #f1f5f9; }
+    .builtins-title { font-size: 9px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+    .builtins table td { padding: 1px 0; font-size: 9.5px; }
+    .hooks-note { border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; background: #f8fafc; break-inside: avoid; }
+    .hooks-note .hn-title { font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 3px; }
+    .hooks-note p { font-size: 10px; color: #64748b; }
+    .flow { text-align: center; padding: 10px; border: 1.5px solid #e2e8f0; border-radius: 8px; margin-bottom: 10px; break-inside: avoid; }
+    .flow-title { font-size: 9px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .flow-row { display: flex; align-items: center; justify-content: center; gap: 4px; flex-wrap: wrap; margin-bottom: 6px; }
+    .flow-row .pill { font-size: 9.5px; font-weight: 600; padding: 3px 8px; border-radius: 12px; border: 1px solid; }
+    .flow-row .arrow { color: #94a3b8; font-size: 12px; }
+    .flow-sub { display: flex; justify-content: center; gap: 12px; font-size: 9.5px; color: #64748b; }
+    .footer { text-align: center; font-size: 9px; color: #94a3b8; margin-top: 8px; padding-top: 8px; border-top: 1px solid #e2e8f0; }
+    .footer a { color: #10a37f; text-decoration: none; font-weight: 600; }
+    .no-print { position: fixed; top: 12px; right: 12px; z-index: 10; }
+    .no-print button { font-family: 'Segoe UI', sans-serif; font-size: 13px; font-weight: 700; color: #fff; background: #10a37f; border: none; border-radius: 8px; padding: 8px 18px; cursor: pointer; }
+    .no-print button:hover { background: #0d8c6b; }
+    @media print { .no-print { display: none; } }
+    /* colors */
+    .c-cmd { border-color: #fde68a; } .c-cmd .card-num { background: #d97706; }
+    .c-mcp { border-color: #a7f3d0; } .c-mcp .card-num { background: #10a37f; }
+    .c-skill { border-color: #a5f3fc; } .c-skill .card-num { background: #0891b2; }
+    .c-gpt { border-color: #ddd6fe; } .c-gpt .card-num { background: #7c3aed; }
+    .ex-cmd { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+    .ex-mcp { background: #ecfdf5; color: #10a37f; border: 1px solid #a7f3d0; }
+    .ex-skill { background: #ecfeff; color: #0891b2; border: 1px solid #a5f3fc; }
+    .ex-gpt { background: #f5f3ff; color: #7c3aed; border: 1px solid #ddd6fe; }
+    .c-plug { border-color: #fca5a5; } .c-plug .card-num { background: #ef4444; }
+    .ex-plug { background: #fef2f2; color: #ef4444; border: 1px solid #fca5a5; }
+  </style>
+</head>
+<body>
+  <div class="no-print"><button onclick="window.print()">Save as PDF</button></div>
+
+  <div class="header">
+    <h1>ChatGPT / Codex Extension Cheatsheet</h1>
+    <div class="meta">Updated 6 March 2026 &middot; Codex CLI v0.111.0 &middot; <a href="https://developers.openai.com/codex" style="color:#10a37f;text-decoration:none">developers.openai.com/codex</a></div>
+  </div>
+
+  <div class="sequence">
+    <span class="step">1. Slash Commands</span><span class="arrow">&rarr;</span>
+    <span class="step">2. Function Calling / MCP</span><span class="arrow">&rarr;</span>
+    <span class="step">3. Skills</span><span class="arrow">&rarr;</span>
+    <span class="step">4. Custom GPTs</span><span class="arrow">&rarr;</span>
+    <span class="step">5. Plugins</span>
+  </div>
+
+  <div class="grid">
+    <!-- Slash Commands -->
+    <div class="card c-cmd">
+      <div class="card-header"><div class="card-num">1</div><div class="card-title">&#x26A1; Slash Commands</div></div>
+      <div class="card-tagline">The shortcuts &mdash; quick triggers for frequent workflows</div>
+      <table>
+        <tr><td>Scope</td><td>Codex CLI / IDE</td></tr>
+        <tr><td>Activation</td><td>User types <code>/cmd</code></td></tr>
+        <tr><td>Token cost</td><td>Minimal</td></tr>
+        <tr><td>Best for</td><td>Manual workflow shortcuts</td></tr>
+        <tr><td>Install</td><td>Built-in; custom via AGENTS.md or config</td></tr>
+      </table>
+      <div class="examples"><span class="ex-cmd">/resume</span><span class="ex-cmd">/fork</span><span class="ex-cmd">/compact</span><span class="ex-cmd">/clear</span><span class="ex-cmd">/diff</span><span class="ex-cmd">/review</span></div>
+      <div class="builtins">
+        <div class="builtins-title">Built-in</div>
+        <table>
+          <tr><td><code>/init</code></td><td>Generate AGENTS.md scaffold</td></tr>
+          <tr><td><code>/resume</code></td><td>Reopen saved conversations</td></tr>
+          <tr><td><code>/fork</code></td><td>Clone into new thread</td></tr>
+          <tr><td><code>/compact</code></td><td>Summarize to save tokens</td></tr>
+          <tr><td><code>/clear</code></td><td>Start a fresh chat</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Function Calling / MCP -->
+    <div class="card c-mcp">
+      <div class="card-header"><div class="card-num">2</div><div class="card-title">&#x1f527; Function Calling / MCP</div></div>
+      <div class="card-tagline">The nervous system &mdash; connects the model to external tools and real-world data</div>
+      <table>
+        <tr><td>Scope</td><td>ChatGPT + Codex + API</td></tr>
+        <tr><td>Activation</td><td>On demand / always available</td></tr>
+        <tr><td>Token cost</td><td>High (front-loaded)</td></tr>
+        <tr><td>Best for</td><td>External APIs &amp; data</td></tr>
+        <tr><td>Install</td><td>API payload or MCP server config</td></tr>
+      </table>
+      <div class="examples"><span class="ex-mcp">GitHub</span><span class="ex-mcp">Postgres</span><span class="ex-mcp">Slack</span><span class="ex-mcp">Zapier</span><span class="ex-mcp">Stripe</span><span class="ex-mcp">web_search</span></div>
+    </div>
+
+    <!-- Skills -->
+    <div class="card c-skill">
+      <div class="card-header"><div class="card-num">3</div><div class="card-title">&#x1f9e0; Skills</div></div>
+      <div class="card-tagline">The playbook &mdash; modular instructions the agent discovers and loads on demand</div>
+      <table>
+        <tr><td>Scope</td><td>Codex CLI + IDE + App (open standard)</td></tr>
+        <tr><td>Activation</td><td>Auto (context-matching) or <code>$skill</code></td></tr>
+        <tr><td>Token cost</td><td>~100 tokens until needed</td></tr>
+        <tr><td>Best for</td><td>Repeatable coding expertise</td></tr>
+        <tr><td>Install</td><td><code>.agents/skills/&lt;name&gt;/SKILL.md</code></td></tr>
+      </table>
+      <div class="examples"><span class="ex-skill">linear</span><span class="ex-skill">tdd</span><span class="ex-skill">code-review</span><span class="ex-skill">deploy</span><span class="ex-skill">docx</span></div>
+    </div>
+
+    <!-- Custom GPTs -->
+    <div class="card c-gpt">
+      <div class="card-header"><div class="card-num">4</div><div class="card-title">&#x1f916; Custom GPTs</div></div>
+      <div class="card-tagline">The product layer &mdash; full personas with custom instructions, tools &amp; storefront</div>
+      <table>
+        <tr><td>Scope</td><td>ChatGPT only</td></tr>
+        <tr><td>Activation</td><td>Via GPT Store or direct link</td></tr>
+        <tr><td>Token cost</td><td>Depends on configuration</td></tr>
+        <tr><td>Best for</td><td>End-user personas &amp; workflows</td></tr>
+        <tr><td>Install</td><td>GPT Builder &rarr; GPT Store or private link</td></tr>
+      </table>
+      <div class="examples"><span class="ex-gpt">DALL&middot;E</span><span class="ex-gpt">Data Analyst</span><span class="ex-gpt">Canva</span><span class="ex-gpt">Consensus</span><span class="ex-gpt">Code Copilot</span></div>
+    </div>
+
+    <!-- Plugins -->
+    <div class="card c-plug" style="grid-column: 1 / -1;">
+      <div class="card-header"><div class="card-num">5</div><div class="card-title">&#x1f4e6; Plugins</div></div>
+      <div class="card-tagline">The container &mdash; bundles skills, MCP servers &amp; apps for easy distribution (v0.110.0+)</div>
+      <table>
+        <tr><td>Scope</td><td>Codex CLI</td></tr>
+        <tr><td>Activation</td><td>Via install</td></tr>
+        <tr><td>Token cost</td><td>Depends on contents</td></tr>
+        <tr><td>Best for</td><td>Team sharing &amp; distribution</td></tr>
+        <tr><td>Install</td><td><code>/plugin install plugin-name@marketplace</code></td></tr>
+      </table>
+      <div class="examples"><span class="ex-plug">Local marketplace</span><span class="ex-plug">GitHub repos</span><span class="ex-plug">Skills + MCP bundles</span></div>
+    </div>
+  </div>
+
+  <!-- Hooks note -->
+  <div class="hooks-note">
+    <div class="hn-title">&#x1f6e1;&#xfe0f; Hooks &mdash; Not natively available</div>
+    <p>No native hooks in Codex CLI. Hook-like behavior available via Cursor (by Anysphere, v1.7+). For deterministic enforcement, Claude Code is currently the stronger choice.</p>
+  </div>
+
+  <!-- Flow -->
+  <div class="flow">
+    <div class="flow-title">How they fit together</div>
+    <div class="flow-row">
+      <span class="pill" style="background:#f1f5f9;color:#475569;border-color:#e2e8f0">User Input</span>
+      <span class="arrow">&rarr;</span>
+      <span class="pill" style="background:#fffbeb;color:#d97706;border-color:#fde68a">&#x26A1; Commands</span>
+      <span class="arrow">&rarr;</span>
+      <span class="pill" style="background:#ecfeff;color:#0891b2;border-color:#a5f3fc">&#x1f9e0; Skills</span>
+      <span class="arrow">&rarr;</span>
+      <span class="pill" style="background:#ecfdf5;color:#10a37f;border-color:#a7f3d0">&#x1f527; MCP Tools</span>
+    </div>
+    <div class="flow-sub">
+      <span>&#x1f916; <strong>Custom GPTs</strong> bundle personas + tools for end users</span>
+      <span>&middot;</span>
+      <span>&#x1f4e6; <strong>Plugins</strong> bundle &amp; distribute skills, MCP &amp; apps</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="https://developers.openai.com/codex">Codex Docs</a> &middot;
+    <a href="https://github.com/openai/codex">Codex GitHub</a> &middot;
+    <a href="https://chatgpt.com">ChatGPT</a>
+  </div>
+</body>
+</html>

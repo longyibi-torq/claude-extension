@@ -40,14 +40,14 @@
         tokenCost: "Minimal",
         bestFor: "Manual workflow shortcuts",
         install: "Built-in; custom via AGENTS.md or config",
-        examples: ["/skills", "/help", "/undo"],
+        examples: ["/resume", "/fork", "/compact", "/clear", "/diff", "/review"],
         tagline: "The shortcuts \u2014 quick triggers for frequent workflows",
         builtins: [
-          { cmd: "/skills", desc: "List and invoke available skills" },
-          { cmd: "/help", desc: "Show available commands and options" },
-          { cmd: "/undo", desc: "Roll back last N conversation turns" },
-          { cmd: "--continue", desc: "Resume the most recent session" },
-          { cmd: "--resume <id>", desc: "Resume a specific past session" },
+          { cmd: "/init", desc: "Generate AGENTS.md scaffold" },
+          { cmd: "/resume", desc: "Reopen saved conversations" },
+          { cmd: "/fork", desc: "Clone into new thread" },
+          { cmd: "/compact", desc: "Summarize to save tokens" },
+          { cmd: "/clear", desc: "Start a fresh chat" },
         ],
       },
       {
@@ -95,6 +95,21 @@
         examples: ["DALL\u00B7E", "Data Analyst", "Canva", "Consensus", "Code Copilot"],
         tagline: "The product layer \u2014 full personas with custom instructions, tools & storefront",
       },
+      {
+        id: "plugins",
+        label: "Plugins",
+        emoji: "\uD83D\uDCE6",
+        color: "#ef4444",
+        bg: "#fef2f2",
+        border: "#fca5a5",
+        scope: "Codex CLI",
+        activation: "Via install",
+        tokenCost: "Depends on contents",
+        bestFor: "Team sharing & distribution",
+        install: "/plugin install plugin-name@marketplace",
+        examples: ["Local marketplace", "GitHub repos", "Skills + MCP bundles"],
+        tagline: "The container \u2014 bundles skills, MCP servers & apps for easy distribution (v0.110.0+)",
+      },
     ];
 
     const hooksNote = {
@@ -112,6 +127,7 @@
       { id: "mcp",      label: "2. Connect tools", note: "Link to external APIs and services" },
       { id: "skills",   label: "3. Teach expertise", note: "Auto-loaded domain knowledge (open standard)" },
       { id: "gpts",     label: "4. Build personas", note: "Full AI personas with tools & storefront" },
+      { id: "plugins",  label: "5. Bundle & share", note: "Package skills + MCP for distribution" },
     ];
 
     function App() {
@@ -317,6 +333,7 @@
               <div style={{ display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap" }}>
                 {[
                   { emoji: "\uD83E\uDD16", label: "Custom GPTs", color: "#7c3aed", note: "bundle personas, instructions & tools for end users" },
+                  { emoji: "\uD83D\uDCE6", label: "Plugins", color: "#ef4444", note: "bundle & distribute skills, MCP servers & apps (v0.110.0+)" },
                   { emoji: "\uD83D\uDEE1\uFE0F", label: "Hooks", color: "#94a3b8", note: "not natively available \u2014 use Cursor for hook-like behavior" },
                 ].map(item => (
                   <div key={item.label} style={{
@@ -341,7 +358,7 @@
                 {[
                   { label: "AGENTS.md", desc: "Project context file (like Claude's CLAUDE.md)", color: "#10a37f", bg: "#ecfdf5", border: "#a7f3d0" },
                   { label: "GPT Store", desc: "Marketplace for Custom GPTs with 100K+ published GPTs", color: "#7c3aed", bg: "#f5f3ff", border: "#ddd6fe" },
-                  { label: "Thread Rollback", desc: "/undo \u2014 roll back N turns without rewriting git history", color: "#d97706", bg: "#fffbeb", border: "#fde68a" },
+                  { label: "Session Forking", desc: "/fork \u2014 clone conversation into a new thread", color: "#d97706", bg: "#fffbeb", border: "#fde68a" },
                   { label: "Cloud Sandboxes", desc: "Ephemeral sandboxes for fully autonomous, async task delegation", color: "#0891b2", bg: "#ecfeff", border: "#a5f3fc" },
                 ].map(item => (
                   <div key={item.label} style={{
@@ -363,7 +380,11 @@
               </div>
             </div>
 
-            <div className="doc-footer" style={{ textAlign: "center", marginTop: 16 }}>
+            <div style={{ display: "flex", justifyContent: "center", gap: 10, marginTop: 16, flexWrap: "wrap" }}>
+              <a href="chatgpt-cheatsheet-print.html" style={{ fontSize: 12, fontWeight: 700, color: "#10a37f", background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 8, padding: "6px 14px", textDecoration: "none" }}>{"📄"} Save as PDF</a>
+            </div>
+
+            <div className="doc-footer" style={{ textAlign: "center", marginTop: 12 }}>
               <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 8, flexWrap: "wrap", fontSize: 12 }}>
                 <a href="https://developers.openai.com/codex" target="_blank" rel="noopener">Codex Docs</a>
                 <span style={{ color: "#cbd5e1" }}>|</span>
@@ -371,7 +392,7 @@
                 <span style={{ color: "#cbd5e1" }}>|</span>
                 <a href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a>
               </div>
-              <div style={{ color: "#94a3b8", fontSize: 11, marginTop: 6 }}>Updated March 2026</div>
+              <div style={{ color: "#94a3b8", fontSize: 11, marginTop: 6 }}>Updated 6 March 2026 &middot; Codex CLI v0.111.0</div>
             </div>
           </div>
         </div>

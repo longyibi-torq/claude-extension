@@ -317,7 +317,11 @@
               </div>
             </div>
 
-            <div className="doc-footer" style={{ textAlign: "center", marginTop: 16 }}>
+            <div style={{ display: "flex", justifyContent: "center", gap: 10, marginTop: 16, flexWrap: "wrap" }}>
+              <a href="claude-cheatsheet-print.html" style={{ fontSize: 12, fontWeight: 700, color: "#d97757", background: "#fef5f0", border: "1px solid #fed7aa", borderRadius: 8, padding: "6px 14px", textDecoration: "none" }}>{"📄"} Save as PDF</a>
+            </div>
+
+            <div className="doc-footer" style={{ textAlign: "center", marginTop: 12 }}>
               <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 8, flexWrap: "wrap", fontSize: 12 }}>
                 <a href="https://docs.anthropic.com/en/docs/claude-code" target="_blank" rel="noopener">Official Docs</a>
                 <span style={{ color: "#cbd5e1" }}>|</span>
@@ -325,7 +329,7 @@
                 <span style={{ color: "#cbd5e1" }}>|</span>
                 <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">MCP Spec</a>
               </div>
-              <div style={{ color: "#94a3b8", fontSize: 11, marginTop: 6 }}>Updated March 2026</div>
+              <div style={{ color: "#94a3b8", fontSize: 11, marginTop: 6 }}>Updated 6 March 2026 &middot; Claude Code v2.1.70</div>
             </div>
           </div>
         </div>

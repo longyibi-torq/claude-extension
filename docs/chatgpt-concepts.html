@@ -60,7 +60,7 @@
     <div class="summary-table">
       <table>
         <tr>
-          <th></th><th>Slash Commands</th><th>Function Calling / MCP</th><th>Skills</th><th>Custom GPTs</th>
+          <th></th><th>&#x26A1; Slash Commands</th><th>&#x1f527; Function Calling / MCP</th><th>&#x1f9e0; Skills</th><th>&#x1f916; Custom GPTs</th><th>&#x1f4e6; Plugins</th>
         </tr>
         <tr>
           <td><strong>What it is</strong></td>
@@ -68,6 +68,7 @@
           <td>External tool &amp; API connection</td>
           <td>Reusable workflow instructions</td>
           <td>Custom AI persona + toolset</td>
+          <td>Bundled distribution package</td>
         </tr>
         <tr>
           <td><strong>Activation</strong></td>
@@ -75,6 +76,7 @@
           <td>On demand / always available</td>
           <td>Auto (context-matching) or explicit <code>$skill</code></td>
           <td>Via GPT Store or direct link</td>
+          <td>Via install</td>
         </tr>
         <tr>
           <td><strong>Scope</strong></td>
@@ -82,6 +84,7 @@
           <td>ChatGPT + Codex + API</td>
           <td>Codex CLI, IDE, App</td>
           <td>ChatGPT only</td>
+          <td>Codex CLI</td>
         </tr>
         <tr>
           <td><strong>Token cost</strong></td>
@@ -89,6 +92,7 @@
           <td>High (front-loaded)</td>
           <td>~100 tokens until needed</td>
           <td>Depends on configuration</td>
+          <td>Depends on contents</td>
         </tr>
         <tr>
           <td><strong>Best for</strong></td>
@@ -96,6 +100,7 @@
           <td>External APIs &amp; data</td>
           <td>Repeatable coding expertise</td>
           <td>End-user personas &amp; workflows</td>
+          <td>Team sharing &amp; distribution</td>
         </tr>
         <tr>
           <td><strong>Can contain</strong></td>
@@ -103,6 +108,7 @@
           <td>Tool schemas, MCP servers</td>
           <td>Instructions + scripts + resources</td>
           <td>Instructions + Actions + tools + persona</td>
+          <td>Skills + MCP + Apps</td>
         </tr>
         <tr>
           <td><strong>Installation</strong></td>
@@ -110,6 +116,7 @@
           <td>Configure in API payload or <code>mcp_servers</code></td>
           <td>Place in <code>.agents/skills/</code> or via <code>$skill-installer</code></td>
           <td>Build in GPT Builder; share via GPT Store</td>
+          <td><code>/plugin install</code></td>
         </tr>
         <tr>
           <td><strong>Examples</strong></td>
@@ -117,6 +124,7 @@
           <td>GitHub, Postgres, Slack, Zapier, Stripe</td>
           <td>linear, tdd, code-review, deploy, docx</td>
           <td>DALL&middot;E GPT, Data Analyst, Canva, Consensus</td>
+          <td>Via local marketplace or GitHub repos</td>
         </tr>
       </table>
     </div>
@@ -125,28 +133,44 @@
       <strong>&#9888;&#65039; No native Hooks:</strong> Unlike Claude Code, Codex CLI has no built-in lifecycle hook system. Hook-like behavior (auto-lint, pre-commit gates, notifications) is available if you use <strong>Cursor</strong> (a third-party IDE by Anysphere, not OpenAI) which introduced its own hooks in v1.7. If you need deterministic enforcement natively, Claude Code is currently the stronger choice.
     </div>
 
+    <div class="callout-info">
+      <strong>&#x1f4e6; Plugins now available:</strong> As of Codex CLI v0.110.0 (March 2026), Codex supports a plugin system that bundles skills, MCP servers, and app connectors &mdash; installable via <code>/plugin install</code> with local marketplace support.
+    </div>
+
     <hr>
 
     <h2>Layered Mental Model</h2>
+    <p style="font-size:12px;color:#64748b;margin-bottom:8px"><em>Ordered by learning sequence</em></p>
     <div class="tree">ChatGPT / Codex Extension &amp; Customization
-&#9500;&#9472;&#9472; Function Calling / MCP   &rarr; external connections (APIs, DBs, services)
-&#9500;&#9472;&#9472; Skills                   &rarr; auto-loaded domain expertise (open standard)
-&#9500;&#9472;&#9472; Custom GPTs              &rarr; full AI personas bundling instructions + tools
-&#9492;&#9472;&#9472; Slash Commands           &rarr; user-triggered shortcuts</div>
+&#9500;&#9472;&#9472; 1. Slash Commands        &rarr; user-triggered shortcuts
+&#9500;&#9472;&#9472; 2. Function Calling / MCP &rarr; external connections (APIs, DBs, services)
+&#9500;&#9472;&#9472; 3. Skills                &rarr; auto-loaded domain expertise (open standard)
+&#9500;&#9472;&#9472; 4. Custom GPTs           &rarr; full AI personas bundling instructions + tools
+&#9492;&#9472;&#9472; 5. Plugins               &rarr; bundled distributions of skills, MCP &amp; apps</div>
 
     <p><strong>In a single sentence each:</strong></p>
     <ul>
+      <li><strong>Slash Commands</strong> are the shortcuts &mdash; quick triggers for frequent workflows.</li>
       <li><strong>Function Calling / MCP</strong> is the nervous system &mdash; connecting the model to external tools and real-world data.</li>
       <li><strong>Skills</strong> are the playbook &mdash; modular instructions the agent discovers and loads on demand.</li>
       <li><strong>Custom GPTs</strong> are the product layer &mdash; full personas with custom instructions, tools, and a storefront presence.</li>
-      <li><strong>Slash Commands</strong> are the shortcuts &mdash; quick triggers for frequent workflows.</li>
+      <li><strong>Plugins</strong> are the shipping container &mdash; bundling skills, MCP servers, and apps for easy distribution (added in v0.110.0).</li>
     </ul>
 
     <hr>
 
     <h2>Installation Methods</h2>
 
-    <h3>Function Calling / MCP</h3>
+    <h3>&#x26A1; Slash Commands (Codex CLI)</h3>
+    <pre><code># Built-in commands ship with Codex
+/resume        # reopen saved conversations
+/fork          # clone conversation into new thread
+/compact       # summarize to conserve tokens
+/clear         # start a fresh chat
+
+# Custom commands via AGENTS.md or config</code></pre>
+
+    <h3>&#x1f527; Function Calling / MCP</h3>
     <pre><code>// Via API payload (function calling)
 tools: [{
   type: "function",
@@ -164,7 +188,7 @@ mcp_servers: [{
   name: "github-mcp"
 }]</code></pre>
 
-    <h3>Skills (Codex CLI / IDE)</h3>
+    <h3>&#x1f9e0; Skills (Codex CLI / IDE)</h3>
     <pre><code># Skills live in .agents/skills/ (repo-scoped)
 .agents/skills/my-skill/
 &#9500;&#9472;&#9472; SKILL.md        # name, description, instructions
@@ -177,7 +201,7 @@ $skill-installer install the linear skill from the .experimental folder
 # Or browse skills.sh (Vercel's package manager)
 npx skills add linear</code></pre>
 
-    <h3>Custom GPTs (ChatGPT)</h3>
+    <h3>&#x1f916; Custom GPTs (ChatGPT)</h3>
     <ol>
       <li>Go to <strong>chatgpt.com &rarr; Explore GPTs &rarr; Create</strong></li>
       <li>Use GPT Builder to define instructions, upload knowledge, add Actions</li>
@@ -185,50 +209,61 @@ npx skills add linear</code></pre>
       <li>Optionally add <strong>Custom Actions</strong> using an OpenAPI schema to call external APIs</li>
     </ol>
 
-    <h3>Slash Commands (Codex CLI)</h3>
-    <pre><code># Built-in commands ship with Codex
-/skills        # list and invoke available skills
-/help          # show available commands
-/undo          # undo last N turns (thread rollback)
+    <h3>&#x1f4e6; Plugins (Codex CLI v0.110.0+)</h3>
+    <pre><code># Install from a marketplace
+/plugin marketplace add owner/repository
+/plugin install plugin-name@marketplace-name
 
-# Custom commands via AGENTS.md or config</code></pre>
+# Codex auto-discovers installed plugins at session start
+# Plugins can bundle skills, MCP servers, and app connectors</code></pre>
+
+    <div class="callout-info">
+      <strong>New in v0.110.0 (March 2026):</strong> Codex CLI now supports a plugin architecture that loads skills, MCP entries, and app connectors from config or a local marketplace. This brings Codex closer to Claude Code&rsquo;s plugin model with <code>/plugin install</code> syntax.
+    </div>
+
+    <hr>
+
+    <h2>Configuration Scoping &mdash; Where You Put Things Matters</h2>
+    <p>Like Claude Code, Codex configuration is <strong>directory-scoped</strong>. The directory you launch Codex from determines which instructions, skills, and settings are active.</p>
+
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 16px;margin:16px 0;font-size:13px;color:#475569;">
+      <strong style="color:#15803d;">Example:</strong> If you add project conventions to <code>~/.codex/AGENTS.md</code> (user level), those instructions apply to <em>every repo you open</em>. Put them in the project&rsquo;s <code>AGENTS.md</code> instead, and they only activate when you launch Codex from that project.
+    </div>
+
+    <h3>Scope Hierarchy (highest precedence first)</h3>
+    <table>
+      <tr><th>Scope</th><th>Location</th><th>Applies to</th><th>Shared?</th></tr>
+      <tr><td><strong>CLI flags</strong></td><td>Command-line arguments</td><td>Current session only</td><td>No</td></tr>
+      <tr><td><strong>Project</strong></td><td><code>.codex/config.toml</code>, <code>AGENTS.md</code></td><td>All project collaborators</td><td>Yes (committed to git)</td></tr>
+      <tr><td><strong>User</strong></td><td><code>~/.codex/config.toml</code>, <code>~/.codex/AGENTS.md</code></td><td>You, all your projects</td><td>No</td></tr>
+      <tr><td><strong>System</strong></td><td>System config directories</td><td>All users on machine</td><td>Yes</td></tr>
+    </table>
+
+    <h3>How Each Config Type Resolves</h3>
+    <table>
+      <tr><th>Config</th><th>Resolution rule</th></tr>
+      <tr><td><strong>AGENTS.md</strong></td><td>Checks <code>~/.codex/AGENTS.md</code> first, then walks <em>up</em> from your working directory to the repo root, concatenating files. Closer files appear later in the prompt (higher precedence). Combined size capped at 32 KiB.</td></tr>
+      <tr><td><strong>Skills</strong></td><td>Scanned upward from <code>$CWD/.agents/skills/</code> to repo root, then <code>~/.agents/skills/</code> (user level), then system level. All discovered skills are available; no merging by name.</td></tr>
+      <tr><td><strong>config.toml</strong></td><td>Closest <code>.codex/config.toml</code> wins over user-level. CLI flags override everything.</td></tr>
+    </table>
+
+    <div class="callout-info">
+      <strong>Trust gate:</strong> Project-level <code>.codex/</code> configuration only loads in <strong>trusted projects</strong>. If you mark a project as untrusted, Codex ignores all project-level config and falls back to user/system defaults &mdash; a safety measure against malicious repo configs.
+    </div>
+
+    <h3>Practical Rule of Thumb</h3>
+    <ul>
+      <li><strong>Project-specific conventions</strong> (stack, linting rules, test commands) &rarr; put in the repo&rsquo;s <code>AGENTS.md</code>.</li>
+      <li><strong>Personal preferences</strong> (model, style, global instructions) &rarr; put in <code>~/.codex/AGENTS.md</code> or <code>~/.codex/config.toml</code>.</li>
+      <li><strong>Team-shared skills</strong> &rarr; commit to <code>.agents/skills/</code> so everyone on the team gets them.</li>
+      <li><strong>Personal skills</strong> &rarr; place in <code>~/.agents/skills/</code> so they follow you across repos.</li>
+    </ul>
 
     <hr>
 
     <h2>Popular Examples by Category</h2>
 
-    <h3>Function Calling / MCP Tools</h3>
-    <table>
-      <tr><th>Tool</th><th>What it does</th></tr>
-      <tr><td><code>github</code></td><td>Read PRs, create issues, review code diffs</td></tr>
-      <tr><td><code>postgres</code></td><td>Query databases in plain English</td></tr>
-      <tr><td><code>slack</code></td><td>Send messages, search threads</td></tr>
-      <tr><td><code>zapier</code></td><td>Trigger 5,000+ app automations</td></tr>
-      <tr><td><code>stripe</code></td><td>Look up payments, customers, subscriptions</td></tr>
-      <tr><td><code>web_search</code></td><td>Live web search (built-in, opt-in)</td></tr>
-    </table>
-
-    <h3>Skills (Codex)</h3>
-    <table>
-      <tr><th>Skill</th><th>Auto-activates when&hellip;</th></tr>
-      <tr><td><code>linear</code></td><td>You mention tasks, issues, or project management</td></tr>
-      <tr><td><code>tdd</code></td><td>You ask Codex to write tests</td></tr>
-      <tr><td><code>code-review</code></td><td>You ask for a review of existing code</td></tr>
-      <tr><td><code>deploy</code></td><td>You mention deployment, release, or CI/CD</td></tr>
-      <tr><td><code>docx</code></td><td>You ask Codex to create or edit a Word document</td></tr>
-    </table>
-
-    <h3>Custom GPTs (ChatGPT)</h3>
-    <table>
-      <tr><th>GPT</th><th>What it does</th></tr>
-      <tr><td><strong>DALL&middot;E</strong></td><td>Generate and edit images from text</td></tr>
-      <tr><td><strong>Data Analyst</strong></td><td>Upload CSVs; get charts and insights</td></tr>
-      <tr><td><strong>Canva</strong></td><td>Design graphics via natural language</td></tr>
-      <tr><td><strong>Consensus</strong></td><td>Search peer-reviewed research papers</td></tr>
-      <tr><td><strong>Code Copilot</strong></td><td>Specialized coding assistant with project context</td></tr>
-    </table>
-
-    <h3>Slash Commands (Codex CLI)</h3>
+    <h3>&#x26A1; Slash Commands (Codex CLI)</h3>
     <table>
       <tr><th>Command</th><th>What it does</th></tr>
       <tr><td><code>/resume</code></td><td>Reopen a saved conversation</td></tr>
@@ -239,12 +274,46 @@ npx skills add linear</code></pre>
       <tr><td><code>/review</code></td><td>Request working tree analysis</td></tr>
     </table>
 
+    <h3>&#x1f527; Function Calling / MCP Tools</h3>
+    <table>
+      <tr><th>Tool</th><th>What it does</th></tr>
+      <tr><td><code>github</code></td><td>Read PRs, create issues, review code diffs</td></tr>
+      <tr><td><code>postgres</code></td><td>Query databases in plain English</td></tr>
+      <tr><td><code>slack</code></td><td>Send messages, search threads</td></tr>
+      <tr><td><code>zapier</code></td><td>Trigger 5,000+ app automations</td></tr>
+      <tr><td><code>stripe</code></td><td>Look up payments, customers, subscriptions</td></tr>
+      <tr><td><code>web_search</code></td><td>Live web search (built-in, opt-in)</td></tr>
+    </table>
+
+    <h3>&#x1f9e0; Skills (Codex)</h3>
+    <table>
+      <tr><th>Skill</th><th>Auto-activates when&hellip;</th></tr>
+      <tr><td><code>linear</code></td><td>You mention tasks, issues, or project management</td></tr>
+      <tr><td><code>tdd</code></td><td>You ask Codex to write tests</td></tr>
+      <tr><td><code>code-review</code></td><td>You ask for a review of existing code</td></tr>
+      <tr><td><code>deploy</code></td><td>You mention deployment, release, or CI/CD</td></tr>
+      <tr><td><code>docx</code></td><td>You ask Codex to create or edit a Word document</td></tr>
+    </table>
+
+    <h3>&#x1f916; Custom GPTs (ChatGPT)</h3>
+    <table>
+      <tr><th>GPT</th><th>What it does</th></tr>
+      <tr><td><strong>DALL&middot;E</strong></td><td>Generate and edit images from text</td></tr>
+      <tr><td><strong>Data Analyst</strong></td><td>Upload CSVs; get charts and insights</td></tr>
+      <tr><td><strong>Canva</strong></td><td>Design graphics via natural language</td></tr>
+      <tr><td><strong>Consensus</strong></td><td>Search peer-reviewed research papers</td></tr>
+      <tr><td><strong>Code Copilot</strong></td><td>Specialized coding assistant with project context</td></tr>
+    </table>
+
     <hr>
 
     <h2>Key Concepts Unique to OpenAI</h2>
 
     <h3>AGENTS.md</h3>
     <p>The OpenAI equivalent of Claude's <code>CLAUDE.md</code>. A markdown file in your repo root that gives the agent persistent project context &mdash; tech stack, conventions, key commands, and guidelines. Codex reads it automatically at session start.</p>
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 16px;margin:12px 0;font-size:13px;color:#475569;">
+      <strong style="color:#10a37f;">See real examples:</strong> View the <a href="config-examples.html" style="color:#10a37f;font-weight:600">AGENTS.md &amp; CLAUDE.md</a> from this repository side by side.
+    </div>
     <pre><code># Project Context
 ## Stack: Next.js 14, TypeScript, Supabase
 ## Run: npm run dev
@@ -266,6 +335,7 @@ npx skills add linear</code></pre>
     <p><em>Not part of the extension stack &mdash; native Codex CLI utilities</em></p>
     <table>
       <tr><th>Command</th><th>What it does</th></tr>
+      <tr><td><code>/init</code></td><td>Generate an AGENTS.md scaffold for the current project</td></tr>
       <tr><td><code>/resume</code></td><td>Reopen a saved conversation (interactive picker)</td></tr>
       <tr><td><code>/fork</code></td><td>Clone conversation into a new thread</td></tr>
       <tr><td><code>/compact</code></td><td>Summarize conversation to conserve tokens</td></tr>
