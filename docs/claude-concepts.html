@@ -49,63 +49,63 @@
     <div class="summary-table">
       <table>
         <tr>
-          <th></th><th>Tool / MCP</th><th>Skill</th><th>Plugin</th><th>Command</th>
+          <th></th><th>Command</th><th>Tool / MCP</th><th>Skill</th><th>Plugin</th>
         </tr>
         <tr>
           <td><strong>What it is</strong></td>
+          <td>Manual shortcut</td>
           <td>External connection protocol</td>
           <td>Reusable workflow instructions</td>
           <td>Bundled distribution package</td>
-          <td>Manual shortcut</td>
         </tr>
         <tr>
           <td><strong>Activation</strong></td>
+          <td>User types <code>/cmd</code></td>
           <td>On demand / always available</td>
           <td>Auto (context-matching)</td>
           <td>Via install</td>
-          <td>User types <code>/cmd</code></td>
         </tr>
         <tr>
           <td><strong>Scope</strong></td>
+          <td>Claude Code only</td>
           <td>Claude-wide + multi-vendor</td>
           <td>Claude-wide</td>
-          <td>Claude Code only</td>
           <td>Claude Code only</td>
         </tr>
         <tr>
           <td><strong>Token cost</strong></td>
+          <td>Minimal</td>
           <td>Front-loads all capabilities</td>
           <td>~100 tokens until needed</td>
           <td>Depends on contents</td>
-          <td>Minimal</td>
         </tr>
         <tr>
           <td><strong>Best for</strong></td>
+          <td>Manual workflows</td>
           <td>External APIs &amp; data</td>
           <td>Repeatable expertise</td>
           <td>Team sharing &amp; distribution</td>
-          <td>Manual workflows</td>
         </tr>
         <tr>
           <td><strong>Can contain</strong></td>
+          <td>Prompts / bash scripts</td>
           <td>Tool definitions</td>
           <td>Instructions + scripts</td>
           <td>Skills + MCP + Agents + Hooks</td>
-          <td>Prompts / bash scripts</td>
         </tr>
         <tr>
           <td><strong>Installation</strong></td>
+          <td>Save <code>.md</code> to <code>.claude/commands/</code></td>
           <td>Add to config or <code>claude mcp add</code></td>
           <td>Place in <code>.claude/skills/</code> or via plugin</td>
           <td><code>/plugin install</code> or <code>npm i</code></td>
-          <td>Save <code>.md</code> to <code>.claude/commands/</code></td>
         </tr>
         <tr>
           <td><strong>Examples</strong></td>
+          <td>/review, /deploy, /write-plan, /audit</td>
           <td>GitHub, Postgres, Slack, Filesystem, Brave Search</td>
           <td>tdd, code-review, docx, internal-comms, deploy</td>
           <td>supabase-pack, devops-automation-pack, skills-toolkit</td>
-          <td>/review, /deploy, /write-plan, /audit</td>
         </tr>
       </table>
     </div>
@@ -268,7 +268,9 @@ npm i @intentsolutionsio/supabase-pack</code></pre>
       <tr><td><code>/context</code></td><td>Show current token usage vs. context window limit</td></tr>
       <tr><td><code>/clear</code></td><td>Wipe conversation history; re-reads CLAUDE.md</td></tr>
       <tr><td><code>/compact</code></td><td>Summarize conversation to save tokens</td></tr>
-      <tr><td><code>--resume</code> / <code>/resume</code></td><td>Restore a past session interactively or by ID</td></tr>
+      <tr><td><code>--continue</code> / <code>-c</code></td><td>Load the most recent conversation in the current directory</td></tr>
+      <tr><td><code>--resume</code> / <code>-r</code></td><td>Resume a specific session by ID or name (CLI flag)</td></tr>
+      <tr><td><code>/resume</code></td><td>Reopen a saved conversation (interactive slash command)</td></tr>
       <tr><td><code>/cost</code></td><td>Show token usage and cost for the session</td></tr>
     </table>
 

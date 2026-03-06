@@ -60,63 +60,63 @@
     <div class="summary-table">
       <table>
         <tr>
-          <th></th><th>Function Calling / MCP</th><th>Skills</th><th>Custom GPTs</th><th>Slash Commands</th>
+          <th></th><th>Slash Commands</th><th>Function Calling / MCP</th><th>Skills</th><th>Custom GPTs</th>
         </tr>
         <tr>
           <td><strong>What it is</strong></td>
+          <td>Built-in or user shortcuts</td>
           <td>External tool &amp; API connection</td>
           <td>Reusable workflow instructions</td>
           <td>Custom AI persona + toolset</td>
-          <td>Built-in or user shortcuts</td>
         </tr>
         <tr>
           <td><strong>Activation</strong></td>
+          <td>User types <code>/cmd</code></td>
           <td>On demand / always available</td>
           <td>Auto (context-matching) or explicit <code>$skill</code></td>
           <td>Via GPT Store or direct link</td>
-          <td>User types <code>/cmd</code></td>
         </tr>
         <tr>
           <td><strong>Scope</strong></td>
+          <td>Codex CLI / IDE</td>
           <td>ChatGPT + Codex + API</td>
           <td>Codex CLI, IDE, App</td>
           <td>ChatGPT only</td>
-          <td>Codex CLI / IDE</td>
         </tr>
         <tr>
           <td><strong>Token cost</strong></td>
+          <td>Minimal</td>
           <td>High (front-loaded)</td>
           <td>~100 tokens until needed</td>
           <td>Depends on configuration</td>
-          <td>Minimal</td>
         </tr>
         <tr>
           <td><strong>Best for</strong></td>
+          <td>Manual workflow shortcuts</td>
           <td>External APIs &amp; data</td>
           <td>Repeatable coding expertise</td>
           <td>End-user personas &amp; workflows</td>
-          <td>Manual workflow shortcuts</td>
         </tr>
         <tr>
           <td><strong>Can contain</strong></td>
+          <td>Prompts / scripts</td>
           <td>Tool schemas, MCP servers</td>
           <td>Instructions + scripts + resources</td>
           <td>Instructions + Actions + tools + persona</td>
-          <td>Prompts / scripts</td>
         </tr>
         <tr>
           <td><strong>Installation</strong></td>
+          <td>Built into CLI; custom via config</td>
           <td>Configure in API payload or <code>mcp_servers</code></td>
           <td>Place in <code>.agents/skills/</code> or via <code>$skill-installer</code></td>
           <td>Build in GPT Builder; share via GPT Store</td>
-          <td>Built into CLI; custom via config</td>
         </tr>
         <tr>
           <td><strong>Examples</strong></td>
+          <td>/resume, /fork, /compact, /clear, /diff, /review</td>
           <td>GitHub, Postgres, Slack, Zapier, Stripe</td>
           <td>linear, tdd, code-review, deploy, docx</td>
           <td>DALL&middot;E GPT, Data Analyst, Canva, Consensus</td>
-          <td>/skills, /help, /undo</td>
         </tr>
       </table>
     </div>
@@ -231,9 +231,12 @@ npx skills add linear</code></pre>
     <h3>Slash Commands (Codex CLI)</h3>
     <table>
       <tr><th>Command</th><th>What it does</th></tr>
-      <tr><td><code>/skills</code></td><td>List and invoke available skills</td></tr>
-      <tr><td><code>/undo</code></td><td>Roll back the last N turns without rewriting history</td></tr>
-      <tr><td><code>/help</code></td><td>Show available commands and options</td></tr>
+      <tr><td><code>/resume</code></td><td>Reopen a saved conversation</td></tr>
+      <tr><td><code>/fork</code></td><td>Clone conversation into a new thread</td></tr>
+      <tr><td><code>/compact</code></td><td>Summarize conversation to conserve tokens</td></tr>
+      <tr><td><code>/clear</code></td><td>Clear the terminal and start a fresh chat</td></tr>
+      <tr><td><code>/diff</code></td><td>Display Git changes including untracked files</td></tr>
+      <tr><td><code>/review</code></td><td>Request working tree analysis</td></tr>
     </table>
 
     <hr>
@@ -251,8 +254,8 @@ npx skills add linear</code></pre>
     <h3>GPT Store</h3>
     <p>ChatGPT's marketplace for Custom GPTs &mdash; equivalent to a combination of Claude's Plugin Marketplace and Projects. Users can discover, install, and even monetize GPTs. As of early 2026 there are hundreds of thousands of published GPTs across categories like productivity, coding, research, and design.</p>
 
-    <h3>Thread Rollback (<code>/undo</code>)</h3>
-    <p>Codex CLI's equivalent of <code>/rewind</code> &mdash; lets you undo the last N turns of a conversation without rewriting git history. Useful for experimentation and correcting agent direction mid-task.</p>
+    <h3>Session Forking (<code>/fork</code>)</h3>
+    <p>Codex CLI lets you clone a conversation into a new thread with <code>/fork</code> (or <code>codex fork</code> from the shell). Useful for branching off an existing conversation to explore a different approach without losing the original.</p>
 
     <h3>Codex Cloud Sandboxes</h3>
     <p>Codex's cloud agent runs tasks in isolated, ephemeral sandboxes preloaded with your repository. This enables fully autonomous, asynchronous task delegation &mdash; you describe the task, Codex works independently, then returns a diff or PR. Claude's equivalent is background sub-agents.</p>
@@ -263,11 +266,13 @@ npx skills add linear</code></pre>
     <p><em>Not part of the extension stack &mdash; native Codex CLI utilities</em></p>
     <table>
       <tr><th>Command</th><th>What it does</th></tr>
-      <tr><td><code>/skills</code></td><td>List available skills and invoke one</td></tr>
-      <tr><td><code>/undo</code></td><td>Roll back last N conversation turns</td></tr>
-      <tr><td><code>/help</code></td><td>Show CLI help and available commands</td></tr>
-      <tr><td><code>--continue</code></td><td>Resume the most recent session</td></tr>
-      <tr><td><code>--resume &lt;id&gt;</code></td><td>Resume a specific past session by ID</td></tr>
+      <tr><td><code>/resume</code></td><td>Reopen a saved conversation (interactive picker)</td></tr>
+      <tr><td><code>/fork</code></td><td>Clone conversation into a new thread</td></tr>
+      <tr><td><code>/compact</code></td><td>Summarize conversation to conserve tokens</td></tr>
+      <tr><td><code>/clear</code></td><td>Clear the terminal and start a fresh chat</td></tr>
+      <tr><td><code>/status</code></td><td>Display session configuration and token usage</td></tr>
+      <tr><td><code>codex resume</code></td><td>Resume a session by ID, or use <code>--last</code> for most recent</td></tr>
+      <tr><td><code>codex fork</code></td><td>Create a new thread from a previous session</td></tr>
     </table>
 
     <hr>
