@@ -107,7 +107,8 @@ git push origin main
 To test locally with the Static Web Apps CLI emulator:
 
 ```bash
-npx swa start docs
+npm i -g @azure/static-web-apps-cli
+swa start docs
 ```
 
 The local emulator runs on `http://localhost:4280` and shows a local auth screen that simulates sign-in before you deploy to Azure.
