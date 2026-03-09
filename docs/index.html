@@ -60,12 +60,26 @@
 
     .footer { text-align: center; margin-top: 28px; font-size: 12px; color: #94a3b8; }
 
+    .user-info {
+      position: fixed; top: 16px; right: 24px;
+      font-size: 14px; font-weight: 600; color: #475569;
+      background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px;
+      padding: 8px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.06);
+      display: none; align-items: center; gap: 8px; z-index: 100;
+    }
+    .user-info .avatar { width: 24px; height: 24px; border-radius: 50%; background: #d97757; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+
     @media (max-width: 560px) {
       .columns { grid-template-columns: 1fr; }
+      .user-info { top: 8px; right: 8px; font-size: 12px; padding: 6px 10px; }
     }
   </style>
 </head>
 <body>
+  <div class="user-info" id="user-info">
+    <span class="avatar" id="user-avatar"></span>
+    <span id="user-greeting"></span>
+  </div>
   <div class="container">
     <div class="site-mark">
       <img src="assets/Torq_Logo_COLOR-HZTL.svg" alt="Torq">
@@ -148,5 +162,21 @@
       Claude Code v2.1.70 &middot; Codex CLI v0.111.0
     </div>
   </div>
+  <script>
+    (async function () {
+      try {
+        const res = await fetch('/.auth/me');
+        const { clientPrincipal } = await res.json();
+        if (clientPrincipal && clientPrincipal.userDetails) {
+          const name = clientPrincipal.userDetails;
+          document.getElementById('user-avatar').textContent = name.charAt(0).toUpperCase();
+          document.getElementById('user-greeting').textContent = 'Welcome, ' + name;
+          document.getElementById('user-info').style.display = 'flex';
+        }
+      } catch (e) {
+        // not running on Azure SWA or user not signed in — silently ignore
+      }
+    })();
+  </script>
 </body>
 </html>
