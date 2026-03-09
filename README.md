@@ -1,4 +1,4 @@
-# AI Coding Agent Extension Guide
+# AI Coding Ecosystem
 
 A static reference site comparing the **Claude Code** and **ChatGPT / Codex** extension ecosystems — covering Commands, MCP/Tools, Skills, Hooks, and Plugins for both platforms.
 
@@ -29,7 +29,7 @@ az extension add --name staticwebapp --upgrade
 export RG="rg_app_hosting"
 export APP_NAME="swa_ai_docs"
 export LOCATION="eastus2"
-export REPO_URL="https://github.com/longyibi-torq/claude-extension.git"
+export REPO_URL="https://github.com/torq-dev/ai-coding-ecosystem.git"
 export BRANCH="main"
 
 az staticwebapp create \
